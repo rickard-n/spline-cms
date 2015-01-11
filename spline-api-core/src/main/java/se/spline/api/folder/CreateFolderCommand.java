@@ -1,6 +1,7 @@
 package se.spline.api.folder;
 
 public class CreateFolderCommand extends FolderCommand {
+	public final static String COMMAND = "createFolderCommand";
 	private final String name;
 	private final FolderId parentId;
 

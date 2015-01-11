@@ -1,1 +1,30 @@
 - Consul-spring boot config. (Spring-boot-cloud)
+
+- Folder
+	- Create (id (default), name*, type*, parent)
+	- AddParameters
+	- DeleteParameters
+	- Delete
+
+	- ChangeType
+
+	- AddSubType
+	- DeleteSubType
+
+- Document
+	- Create
+	- Delete
+	- AddFields
+	- DeleteFields
+	- AddParameters (name, type, value)
+	- DeleteParameters
+
+	- AddSubType
+    - DeleteSubType
+
+- Relation
+	- Create
+	- Delete
+	- AddParameters
+	- DeleteParameters
+

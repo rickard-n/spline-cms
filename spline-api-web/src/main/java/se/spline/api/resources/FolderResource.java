@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import se.spline.api.domain.folder.Folder;
 import se.spline.api.request.folder.FolderConverter;
 import se.spline.api.request.folder.FolderRequest;
+import se.spline.api.request.folder.PropertiesConverter;
+import se.spline.api.request.folder.PropertiesRequest;
 import se.spline.query.folder.FolderEntry;
 import se.spline.query.folder.FolderQueryRepository;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Api(value = "folders", description = "CRUD for folders.")
 @RestController
@@ -31,6 +34,9 @@ public class FolderResource extends AbstractResource {
 	@Autowired
 	FolderConverter folderConverter;
 
+	@Autowired
+	PropertiesConverter propertiesConverter;
+
 	@ApiOperation(value = "Create a folder", notes = "Creates a new folder.")
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public ResponseEntity<FolderEntry> createFolder(@Valid @RequestBody FolderRequest folderRequest) {
@@ -41,14 +47,7 @@ public class FolderResource extends AbstractResource {
 		return new ResponseEntity<>(folderEntry, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Create a folder", notes = "Creates a new folder.")
-	@RequestMapping(value = "/{folderId}/move/{parentId}", method = RequestMethod.GET)
-	public String moveFolder(@PathVariable("folderId") String folderId, @PathVariable("parentId") String parentId) {
-		apiService.moveFolder(folderId, parentId);
-		return "redirect:/" + folderId;
-	}
-
-	@ApiOperation(value = "Get a folder", notes = "Get information about a folder.")
+	@ApiOperation(value = "Get all folder", notes = "Get information about all folder.")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	@ResponseBody
 	public List<FolderEntry> getFolders() {
@@ -63,4 +62,24 @@ public class FolderResource extends AbstractResource {
 	public FolderEntry getFolder(@PathVariable String id) {
 		return folderQueryRepository.findOne(id);
 	}
+
+	@ApiOperation(value = "Add properties to a folder.", notes = "Add properties to folder.")
+	@RequestMapping(value = "/{id}/properties", method = RequestMethod.POST)
+	@ResponseBody
+	public FolderEntry updateFolder(@PathVariable String id, @RequestBody PropertiesRequest properties) {
+		final Map<String, String> map = propertiesConverter.convert(properties);
+		final FolderEntry folder = folderQueryRepository.findOne(id);
+		apiService.addProperties(folder, map);
+		return folder;
+	}
+
+	@ApiOperation(value = "Delete folder.", notes = "Delete a folder.")
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteFolder(@PathVariable String id) {
+		final FolderEntry folder = folderQueryRepository.findOne(id);
+		apiService.deleteFolder(folder);
+		return new ResponseEntity<>(id, HttpStatus.OK);
+	}
+
+
 }

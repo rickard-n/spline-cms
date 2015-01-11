@@ -6,7 +6,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.spline.api.folder.FolderCreatedEvent;
-import se.spline.api.folder.FolderMovedEvent;
+import se.spline.api.folder.FolderDeletedEvent;
+import se.spline.api.folder.ParametersAddedToFolderEvent;
+import se.spline.api.folder.parameter.FolderParameter;
+import se.spline.utils.MapMerger;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 @Component
 public class FolderListener {
@@ -26,10 +34,23 @@ public class FolderListener {
 	}
 
 	@EventHandler
-	public void handleFolderMovedEvent(FolderMovedEvent event) {
-		final FolderEntry folderEntry = folderRepository.findOne(event.getFolderId().toString());
-		folderEntry.setParentId(event.getNewParentId().toString());
+	public void handleParametersAddedToFolderEvent(ParametersAddedToFolderEvent event) {
+		final FolderEntry folderEntry = folderRepository.findOne(event.getId().toString());
+		final Map<String, String> originalProperties = folderEntry.getProperties();
+		final List<FolderParameter<?>> parameters = event.getParameters();
+		final Map<String, String> map = new HashMap<>(parameters.size());
+		for(FolderParameter folderParameter : parameters) {
+			map.put(folderParameter.getName(), (String) folderParameter.getValue());
+		}
+
+		final Map<String, String> mergedParameters = MapMerger.mergeMaps(Stream.of(originalProperties, map));
+		folderEntry.setProperties(mergedParameters);
 		folderRepository.save(folderEntry);
+	}
+
+	@EventHandler
+	public void handleFolderDeletedEvent(FolderDeletedEvent event) {
+		folderRepository.delete(event.getFolderId().toString());
 	}
 
 	@Autowired

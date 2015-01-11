@@ -1,4 +1,5 @@
 dependencies {
+	compile project(':spline-core')
 	compile project(':spline-api-core')
 	compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.7.1.RELEASE'
 	compile group: 'org.hibernate', name: 'hibernate-entitymanager'//, version: '1.0.0.GA'

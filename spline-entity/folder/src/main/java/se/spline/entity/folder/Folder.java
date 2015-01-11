@@ -4,10 +4,13 @@ import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier;
 import se.spline.api.folder.FolderCreatedEvent;
+import se.spline.api.folder.FolderDeletedEvent;
 import se.spline.api.folder.FolderId;
-import se.spline.api.folder.FolderMovedEvent;
-import se.spline.api.folder.InvalidParentFolderEvent;
-import se.spline.api.folder.ValidParentFolderEvent;
+import se.spline.api.folder.ParametersAddedToFolderEvent;
+import se.spline.api.folder.ParametersRemovedFromFolderEvent;
+import se.spline.api.folder.parameter.FolderParameter;
+
+import java.util.List;
 
 public class Folder extends AbstractAnnotatedAggregateRoot<FolderId> {
 
@@ -32,18 +35,15 @@ public class Folder extends AbstractAnnotatedAggregateRoot<FolderId> {
 		this.id = event.getFolderIdentifier();
 	}
 
-	public void move(FolderId newParent) {
-		apply(new FolderMovedEvent(id, newParent));
+	public void addParameters(List<FolderParameter<?>> parameters) {
+		apply(new ParametersAddedToFolderEvent(id, parameters));
 	}
 
-	@EventHandler
-	public void handle(FolderMovedEvent event) {}
+	public void delete() {
+		apply(new FolderDeletedEvent(id));
+	}
 
-	public void checkValidParent(FolderId childId) {
-		if(id.equals(childId)) {
-			apply(new InvalidParentFolderEvent(id, childId));
-		} else {
-			apply(new ValidParentFolderEvent(id, childId));
-		}
+	public void removeParameters(List<FolderParameter<?>> parameters) {
+		apply(new ParametersRemovedFromFolderEvent(id, parameters));
 	}
 }

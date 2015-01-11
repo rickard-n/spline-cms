@@ -4,11 +4,18 @@ import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.GenericCommandMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.spline.api.domain.folder.Folder;
+import se.spline.api.folder.AddParametersToFolderCommand;
 import se.spline.api.folder.CreateFolderCommand;
+import se.spline.api.folder.DeleteFolderCommand;
 import se.spline.api.folder.FolderId;
-import se.spline.api.folder.MoveFolderCommand;
+import se.spline.api.folder.parameter.FolderParameter;
+import se.spline.api.folder.parameter.StringFolderParameter;
+import se.spline.query.folder.FolderEntry;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class ApiServiceImpl implements ApiService {
 
@@ -22,8 +29,18 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
-	public void moveFolder(String folderId, String parentId) {
-		final MoveFolderCommand moveFolderCommand = new MoveFolderCommand(new FolderId(folderId), new FolderId(parentId));
-		commandBus.dispatch(new GenericCommandMessage<>("moveFolderCommand", moveFolderCommand, Collections.emptyMap()));
+	public void addProperties(FolderEntry folder, Map<String, String> map) {
+		final List<FolderParameter<?>> prop = new ArrayList<>(map.size());
+		for(Map.Entry<String, String> entry : map.entrySet()) {
+			prop.add(new StringFolderParameter(entry.getKey(), entry.getValue()));
+		}
+		final AddParametersToFolderCommand command = new AddParametersToFolderCommand(new FolderId(folder.getId()), prop);
+		commandBus.dispatch(new GenericCommandMessage<>(AddParametersToFolderCommand.COMMAND, command, Collections.emptyMap()));
+	}
+
+	@Override
+	public void deleteFolder(FolderEntry folder) {
+		final DeleteFolderCommand command = new DeleteFolderCommand(new FolderId(folder.getId()));
+		commandBus.dispatch(new GenericCommandMessage<Object>(DeleteFolderCommand.COMMAND, command, Collections.emptyMap()));
 	}
 }
