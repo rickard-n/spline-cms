@@ -10,11 +10,10 @@ dependencies {
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker'
+	compile group: 'org.springframework', name: 'springloaded'
 }
 
 bootRepackage.enabled = true
 bootRun.enabled = true
 
 applicationDefaultJvmArgs = ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5080"]
-
-

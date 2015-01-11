@@ -36,4 +36,13 @@ public class FolderEntry {
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
+
+	@Override
+	public String toString() {
+		return "FolderEntry{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", parentId='" + parentId + '\'' +
+				'}';
+	}
 }

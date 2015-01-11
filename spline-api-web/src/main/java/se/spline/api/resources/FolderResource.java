@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import se.spline.api.domain.folder.Folder;
-import se.spline.api.folder.FolderId;
+import se.spline.api.request.folder.FolderConverter;
+import se.spline.api.request.folder.FolderRequest;
 import se.spline.query.folder.FolderEntry;
 import se.spline.query.folder.FolderQueryRepository;
 
@@ -28,11 +28,17 @@ public class FolderResource extends AbstractResource {
 	@Autowired
 	FolderQueryRepository folderQueryRepository;
 
+	@Autowired
+	FolderConverter folderConverter;
+
 	@ApiOperation(value = "Create a folder", notes = "Creates a new folder.")
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public ResponseEntity<Folder> createFolder(@Valid @RequestBody Folder folder) {
+	public ResponseEntity<FolderEntry> createFolder(@Valid @RequestBody FolderRequest folderRequest) {
+		final Folder folder = folderConverter.convert(folderRequest);
 		apiService.addFolder(folder);
-		return new ResponseEntity<>(folder, HttpStatus.OK);
+		final FolderEntry folderEntry = new FolderEntry();
+		folderEntry.setId(folder.getId().toString());
+		return new ResponseEntity<>(folderEntry, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Create a folder", notes = "Creates a new folder.")
@@ -40,13 +46,6 @@ public class FolderResource extends AbstractResource {
 	public String moveFolder(@PathVariable("folderId") String folderId, @PathVariable("parentId") String parentId) {
 		apiService.moveFolder(folderId, parentId);
 		return "redirect:/" + folderId;
-	}
-
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public String createFolderWithParams(@RequestParam("id") String id,@RequestParam("name") String name,@RequestParam("parentId") String parentId) {
-		final Folder folder = new Folder(new FolderId(id), name, new FolderId(parentId));
-		apiService.addFolder(folder);
-		return "redirect:/" + folder.getId();
 	}
 
 	@ApiOperation(value = "Get a folder", notes = "Get information about a folder.")

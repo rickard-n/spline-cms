@@ -1,4 +1,4 @@
-package se.spline.api.domain.Folder;
+package se.spline.api.domain.folder;
 
 import se.spline.api.folder.FolderId;
 
@@ -11,10 +11,10 @@ public class Folder implements Serializable {
 	private long version;
 
 	public Folder(FolderId id, String name, FolderId parentId) {
-
 		this.id = id;
 		this.name = name;
 		this.parentId = parentId;
+		this.version = System.currentTimeMillis();
 	}
 
 
