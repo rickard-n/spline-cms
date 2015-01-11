@@ -1,6 +1,8 @@
 ext {
 	axonVersion = '2.3.2'
 	javaVersion = '1.8'
+	junitVersion = '4.12'
+	mockitoVersion = '1.10.17'
 	splineVersion = '0.1'
 }
 

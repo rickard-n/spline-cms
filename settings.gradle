@@ -1,16 +1,30 @@
-rootProject.name = 'spline-cms'
+def projects = [
+		[
+				directory : '',
+				prefix : '',
+				projects : ['spline-api-web', 'spline-api-core','spline-core', 'spline-query']
+		],
+		[
+				directory : 'spline-entity',
+				prefix : '',
+				projects : ['folder','document','relationship']
+		]
+]
 
-include 'spline-api-web', 'spline-api-core','spline-core', 'spline-query'
-include 'folder','document'
-
-rootProject.children.each {project ->
-	String fileBaseName = project.name.replaceAll("\\p{Upper}") { "-${it.toLowerCase()}" }
-	String projectDirName = "$fileBaseName"
-	if('folder'.equals(project.name) || 'document'.equals(project.name)) {
-		projectDirName = "spline-entity/$fileBaseName"
+projects.each {group ->
+	group.projects.each {project ->
+		def fileBaseName = project.replace(group.prefix, '').replaceAll("\\p{Upper}") { "-${it.toLowerCase()}" }
+		def projectDirName = "${group.directory}/$fileBaseName"
+		def projectDir = new File(settingsDir, projectDirName)
+		def buildFileName = "${fileBaseName}.gradle"
+		def projectDescriptor = createProjectDescriptor(rootProject, project, projectDir)
+		projectDescriptor.setBuildFileName(buildFileName)
+		rootProject.children.add(projectDescriptor)
 	}
-	project.projectDir = new File(settingsDir, projectDirName)
-	project.buildFileName = "${fileBaseName}.gradle"
+}
+
+rootProject.name = 'spline-cms'
+rootProject.children.each { project ->
 	assert project.projectDir.isDirectory()
 	assert project.buildFile.isFile()
 }

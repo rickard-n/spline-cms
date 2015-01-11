@@ -16,7 +16,9 @@ public class FolderListener {
 		FolderEntry folderEntry = new FolderEntry();
 		folderEntry.setId(event.getFolderIdentifier().toString());
 		folderEntry.setName(event.getName());
-		folderEntry.setParentId(event.getParentId().toString());
+		if(folderEntry.getParentId() != null) {
+			folderEntry.setParentId(event.getParentId().toString());
+		}
 		companyRepository.save(folderEntry);
 	}
 

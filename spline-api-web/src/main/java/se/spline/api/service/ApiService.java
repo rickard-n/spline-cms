@@ -1,6 +1,6 @@
 package se.spline.api.service;
 
-import se.spline.api.domain.Folder.Folder;
+import se.spline.api.domain.folder.Folder;
 
 public interface ApiService {
 

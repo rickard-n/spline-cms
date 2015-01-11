@@ -3,7 +3,7 @@ package se.spline.api.service;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.GenericCommandMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import se.spline.api.domain.Folder.Folder;
+import se.spline.api.domain.folder.Folder;
 import se.spline.api.folder.CreateFolderCommand;
 import se.spline.api.folder.FolderId;
 import se.spline.api.folder.MoveFolderCommand;

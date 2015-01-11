@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import se.spline.api.domain.Folder.Folder;
+import se.spline.api.domain.folder.Folder;
 import se.spline.api.folder.FolderId;
 import se.spline.query.folder.FolderEntry;
 import se.spline.query.folder.FolderQueryRepository;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(value = "folders", description = "CRUD for folders.")
@@ -27,9 +30,9 @@ public class FolderResource extends AbstractResource {
 
 	@ApiOperation(value = "Create a folder", notes = "Creates a new folder.")
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String createFolder(@RequestBody Folder folder) {
+	public ResponseEntity<Folder> createFolder(@Valid @RequestBody Folder folder) {
 		apiService.addFolder(folder);
-		return "redirect:/" + folder.getId();
+		return new ResponseEntity<>(folder, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Create a folder", notes = "Creates a new folder.")

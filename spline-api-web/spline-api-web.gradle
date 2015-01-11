@@ -1,11 +1,15 @@
 dependencies {
 	compile project(':folder')
+	compile project(':document')
+	compile project(':relationship')
 	compile project(':spline-api-core')
 	compile project(':spline-query')
 
-	compile group: 'com.mangofactory', name:'swagger-springmvc', version: '0.9.0'
+	compile group: 'com.mangofactory', name:'swagger-springmvc', version: '0.9.4'
+	compile group: 'org.webjars', name: 'swagger-ui', version: '2.0.24'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker'
 }
 
 bootRepackage.enabled = true
