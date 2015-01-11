@@ -1,0 +1,16 @@
+rootProject.name = 'spline-cms'
+
+include 'spline-api-web', 'spline-api-core','spline-core', 'spline-query'
+include 'folder','document'
+
+rootProject.children.each {project ->
+	String fileBaseName = project.name.replaceAll("\\p{Upper}") { "-${it.toLowerCase()}" }
+	String projectDirName = "$fileBaseName"
+	if('folder'.equals(project.name) || 'document'.equals(project.name)) {
+		projectDirName = "spline-entity/$fileBaseName"
+	}
+	project.projectDir = new File(settingsDir, projectDirName)
+	project.buildFileName = "${fileBaseName}.gradle"
+	assert project.projectDir.isDirectory()
+	assert project.buildFile.isFile()
+}

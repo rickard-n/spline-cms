@@ -1,0 +1,4 @@
+dependencies {
+	compile group: 'org.springframework', name: 'spring-context'//, version: springVersion
+	compile group: 'org.axonframework', name: 'axon-core', version: axonVersion
+}

@@ -1,0 +1,64 @@
+ext {
+	axonVersion = '2.3.2'
+	javaVersion = '1.8'
+	splineVersion = '0.1'
+}
+
+buildscript {
+	repositories {
+		mavenLocal()
+		maven {
+			url 'http://maven.springframework.org/release'
+		}
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE")
+	}
+}
+
+
+configure(allprojects) {
+	repositories {
+		mavenLocal()
+		maven {
+			url 'http://maven.springframework.org/release'
+		}
+		mavenCentral()
+		jcenter()
+	}
+	group='se.spline'
+	version=splineVersion
+}
+
+configure(subprojects) {
+	apply plugin: 'java'
+	apply plugin: 'spring-boot'
+
+
+	compileJava {
+		sourceCompatibility = javaVersion
+		targetCompatibility = javaVersion
+	}
+
+	compileTestJava {
+		sourceCompatibility = javaVersion
+		targetCompatibility = javaVersion
+	}
+	bootRepackage.enabled = false
+	bootRun.enabled = false
+}
+
+task wrapper(type: Wrapper) {
+	description = "Generates gradlew scripts"
+	gradleVersion = "2.2.1"
+
+	doLast() {
+		def gradleOpts = "-Xmx2048m -Dfile.encoding=utf8"
+		def wrapperFile = file("gradlew")
+		wrapperFile.text = wrapperFile.text.replace("DEFAULT_JVM_OPTS=",
+				"GRADLE_OPTS=\"$gradleOpts \$GRADLE_OPTS\"\nDEFAULT_JVM_OPTS=")
+	}
+}
+
+
