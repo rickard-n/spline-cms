@@ -1,5 +1,6 @@
-package se.spline.api.folder;
+package se.spline.api.folder.event;
 
+import se.spline.api.folder.FolderId;
 import se.spline.api.folder.parameter.FolderParameter;
 
 import java.util.List;

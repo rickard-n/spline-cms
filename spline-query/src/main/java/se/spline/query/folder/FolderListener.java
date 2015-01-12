@@ -5,9 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.spline.api.folder.FolderCreatedEvent;
-import se.spline.api.folder.FolderDeletedEvent;
-import se.spline.api.folder.ParametersAddedToFolderEvent;
+import se.spline.api.folder.event.FolderCreatedEvent;
+import se.spline.api.folder.event.FolderDeletedEvent;
+import se.spline.api.folder.event.ParametersAddedToFolderEvent;
 import se.spline.api.folder.parameter.FolderParameter;
 import se.spline.utils.MapMerger;
 

@@ -4,10 +4,10 @@ import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.spline.api.folder.AddParametersToFolderCommand;
-import se.spline.api.folder.CreateFolderCommand;
-import se.spline.api.folder.DeleteFolderCommand;
-import se.spline.api.folder.RemoveParameterFromFolderCommand;
+import se.spline.api.folder.command.AddParametersToFolderCommand;
+import se.spline.api.folder.command.CreateFolderCommand;
+import se.spline.api.folder.command.DeleteFolderCommand;
+import se.spline.api.folder.command.RemoveParameterFromFolderCommand;
 
 @Component
 public class FolderCommandHandler {

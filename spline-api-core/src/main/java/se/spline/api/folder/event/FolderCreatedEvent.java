@@ -1,4 +1,6 @@
-package se.spline.api.folder;
+package se.spline.api.folder.event;
+
+import se.spline.api.folder.FolderId;
 
 public class FolderCreatedEvent {
 	private final FolderId id;

@@ -3,11 +3,11 @@ package se.spline.entity.folder;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier;
-import se.spline.api.folder.FolderCreatedEvent;
-import se.spline.api.folder.FolderDeletedEvent;
+import se.spline.api.folder.event.FolderCreatedEvent;
+import se.spline.api.folder.event.FolderDeletedEvent;
 import se.spline.api.folder.FolderId;
-import se.spline.api.folder.ParametersAddedToFolderEvent;
-import se.spline.api.folder.ParametersRemovedFromFolderEvent;
+import se.spline.api.folder.event.ParametersAddedToFolderEvent;
+import se.spline.api.folder.event.ParametersRemovedFromFolderEvent;
 import se.spline.api.folder.parameter.FolderParameter;
 
 import java.util.List;
