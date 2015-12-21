@@ -4,9 +4,8 @@ import org.axonframework.eventsourcing.EventSourcingRepository;
 import org.axonframework.eventstore.EventStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class FolderRepositoryConfiguration {
 
 	@Bean
@@ -14,4 +13,6 @@ public class FolderRepositoryConfiguration {
 	EventSourcingRepository<Folder> folderRepository(EventStore eventStore) {
 		return new EventSourcingRepository<>(Folder.class, eventStore);
 	}
+
+
 }

@@ -13,7 +13,7 @@ import se.spline.api.folder.command.RemoveParameterFromFolderCommand;
 public class FolderCommandHandler {
 	private Repository<Folder> repository;
 
-	@CommandHandler(commandName = CreateFolderCommand.COMMAND)
+	@CommandHandler
 	public void handleCreateFolder(CreateFolderCommand command) {
 		Folder folder = new Folder(command.getFolderId(),
 				command.getName(),
@@ -21,19 +21,19 @@ public class FolderCommandHandler {
 		repository.add(folder);
 	}
 
-	@CommandHandler(commandName = AddParametersToFolderCommand.COMMAND)
+	@CommandHandler
 	public void handleAddParametersToFolder(AddParametersToFolderCommand command) {
 		final Folder folder = repository.load(command.getFolderId());
 		folder.addParameters(command.getParameters());
 	}
 
-	@CommandHandler(commandName = RemoveParameterFromFolderCommand.COMMAND)
+	@CommandHandler
 	public void handleRemoveParametersFromFolder(RemoveParameterFromFolderCommand command) {
 		final Folder folder = repository.load(command.getFolderId());
 		folder.removeParameters(command.getParameters());
 	}
 
-	@CommandHandler(commandName = DeleteFolderCommand.COMMAND)
+	@CommandHandler
 	public void handleDeleteFolderCommand(DeleteFolderCommand command) {
 		final Folder folder = repository.load(command.getFolderId());
 		folder.delete();

@@ -1,13 +1,14 @@
 ext {
-	axonVersion = '2.3.2'
-	guavaVersion = '15.0'
+	gradleVersion = '2.9'
 	javaVersion = '1.8'
-	junitVersion = '4.12'
-	mockitoVersion = '1.10.17'
 	splineVersion = '0.1'
 }
 
 buildscript {
+	ext {
+		springBootVersion = '1.2.5.RELEASE'
+		dependencyManagementVersion = '0.5.4.RELEASE'
+	}
 	repositories {
 		mavenLocal()
 		maven {
@@ -16,14 +17,13 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE")
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+        classpath "io.spring.gradle:dependency-management-plugin:$dependencyManagementVersion"
 	}
 }
 
-
 configure(allprojects) {
 	repositories {
-		mavenLocal()
 		maven {
 			url 'http://maven.springframework.org/release'
 		}
@@ -36,8 +36,6 @@ configure(allprojects) {
 
 configure(subprojects) {
 	apply plugin: 'java'
-	apply plugin: 'spring-boot'
-
 
 	compileJava {
 		sourceCompatibility = javaVersion
@@ -48,20 +46,28 @@ configure(subprojects) {
 		sourceCompatibility = javaVersion
 		targetCompatibility = javaVersion
 	}
-	bootRepackage.enabled = false
-	bootRun.enabled = false
+
+    apply plugin: "io.spring.dependency-management"
+
+    dependencyManagement {
+        imports {
+            mavenBom 'io.spring.platform:platform-bom:2.0.1.RELEASE'
+        }
+        dependencies {
+            dependencySet (group: 'org.axonframework', version: '2.4.3') {
+                entry 'axon-core'
+                entry 'axon-test'
+            }
+            dependencySet (group: 'io.springfox', version: '2.3.0') {
+                entry 'springfox-swagger2'
+                entry 'springfox-swagger-ui'
+            }
+        }
+    }
 }
 
 task wrapper(type: Wrapper) {
-	description = "Generates gradlew scripts"
-	gradleVersion = "2.2.1"
-
-	doLast() {
-		def gradleOpts = "-Xmx2048m -Dfile.encoding=utf8"
-		def wrapperFile = file("gradlew")
-		wrapperFile.text = wrapperFile.text.replace("DEFAULT_JVM_OPTS=",
-				"GRADLE_OPTS=\"$gradleOpts \$GRADLE_OPTS\"\nDEFAULT_JVM_OPTS=")
-	}
+	gradleVersion = "${project.ext.gradleVersion}"
 }
 
 

@@ -1,13 +1,11 @@
 package se.spline.api.request.folder;
 
-import com.wordnik.swagger.annotations.ApiModel;
-import com.wordnik.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
-@ApiModel(value = "Property", description = "Property representation.")
+//@ApiModel(value = "Property", description = "Property representation.")
 public class PropertyRequest {
 	@NotBlank(message = "Name must not be blank!")
-	@ApiModelProperty(required = true)
+	//@ApiModelProperty(required = true)
 	private String name;
 	private String value;
 

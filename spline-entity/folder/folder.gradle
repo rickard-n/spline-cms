@@ -1,9 +1,9 @@
 dependencies {
 	compile group: 'org.springframework', name: 'spring-beans'
 	compile group: 'org.springframework', name: 'spring-context'
-	compile group: 'org.axonframework', name: 'axon-core', version: axonVersion
+	compile group: 'org.axonframework', name: 'axon-core'
 	compile project(':spline-api-core')
-	testCompile group: 'org.axonframework', name: 'axon-test', version: axonVersion
-	testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
-	testCompile group: 'junit', name: 'junit', version: junitVersion
+	testCompile group: 'org.axonframework', name: 'axon-test'
+	testCompile group: 'org.mockito', name: 'mockito-core'
+	testCompile group: 'junit', name: 'junit'
 }

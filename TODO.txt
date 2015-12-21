@@ -1,9 +1,27 @@
 - Consul-spring boot config. (Spring-boot-cloud)
 
+- Type (id (default), name*, namespace, queryName, parent*)
+	- Create
+	- Add
+	- Delete
+	- Update (?)
+
+- Policy
+
+- Properties:
+	- String
+	- Boolean
+	- Integer
+	- DateTime
+	- Decimal
+	- Uri
+
+- Repository (id (default), name*)
+
 - Folder
-	- Create (id (default), name*, type*, parent)
-	- AddParameters
-	- DeleteParameters
+	- Create (id (default), name*, type*, repository, parent)
+	- AddParameters <- Properties
+	- DeleteParameters <- Properties
 	- Delete
 
 	- ChangeType
@@ -11,8 +29,8 @@
 	- AddSubType
 	- DeleteSubType
 
-- Document
-	- Create
+- Document (id (default), name*, type*)
+    - Create
 	- Delete
 	- AddFields
 	- DeleteFields
@@ -21,6 +39,9 @@
 
 	- AddSubType
     - DeleteSubType
+
+    - add event
+    - delete event
 
 - Relation
 	- Create

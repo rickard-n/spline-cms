@@ -1,14 +1,11 @@
 package se.spline.api.request.folder;
 
-import com.wordnik.swagger.annotations.ApiModel;
-import com.wordnik.swagger.annotations.ApiModelProperty;
-
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@ApiModel(value = "Properties", description = "Properties representation.")
+//@ApiModel(value = "Properties", description = "Properties representation.")
 public class PropertiesRequest {
-	@ApiModelProperty(required = true)
+	//@ApiModelProperty(required = true)
 	@NotNull
 	private List<PropertyRequest> properties;
 

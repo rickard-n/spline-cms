@@ -1,22 +1,11 @@
 package se.spline;
 
-import com.mangofactory.swagger.annotations.ApiIgnore;
-import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
-import com.mangofactory.swagger.models.dto.ApiInfo;
-import com.mangofactory.swagger.plugin.EnableSwagger;
-import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-@EnableSwagger
+//@EnableSwagger
 @Configuration
 public class SwaggerConfiguration {
-
+    /*
 	@Autowired
 	private SpringSwaggerConfig springSwaggerConfig;
 
@@ -50,5 +39,5 @@ public class SwaggerConfiguration {
 				null,
 				null
 		);
-	}
+	} */
 }

@@ -1,26 +1,24 @@
 package se.spline.folder;
 
-import org.axonframework.commandhandling.GenericCommandMessage;
 import org.axonframework.test.FixtureConfiguration;
 import org.axonframework.test.Fixtures;
 import org.junit.Before;
 import org.junit.Test;
+import se.spline.api.folder.FolderId;
 import se.spline.api.folder.command.AddParametersToFolderCommand;
 import se.spline.api.folder.command.CreateFolderCommand;
 import se.spline.api.folder.command.DeleteFolderCommand;
+import se.spline.api.folder.command.RemoveParameterFromFolderCommand;
 import se.spline.api.folder.event.FolderCreatedEvent;
 import se.spline.api.folder.event.FolderDeletedEvent;
-import se.spline.api.folder.FolderId;
 import se.spline.api.folder.event.ParametersAddedToFolderEvent;
 import se.spline.api.folder.event.ParametersRemovedFromFolderEvent;
-import se.spline.api.folder.command.RemoveParameterFromFolderCommand;
 import se.spline.api.folder.parameter.FolderParameter;
 import se.spline.api.folder.parameter.StringFolderParameter;
 import se.spline.entity.folder.Folder;
 import se.spline.entity.folder.FolderCommandHandler;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FolderCommandHandlerTest {
@@ -49,7 +47,7 @@ public class FolderCommandHandlerTest {
 		CreateFolderCommand command = new CreateFolderCommand(folderId, NAME, parentId);
 
 		fixture.given()
-				.when(new GenericCommandMessage<>("createFolderCommand", command, Collections.emptyMap()))
+				.when(command)
 				.expectEvents(new FolderCreatedEvent(folderId, NAME, parentId));
 	}
 
@@ -58,7 +56,7 @@ public class FolderCommandHandlerTest {
 		DeleteFolderCommand command = new DeleteFolderCommand(folderId);
 
 		fixture.given(new FolderCreatedEvent(folderId, NAME, null))
-				.when(new GenericCommandMessage<>("deleteFolderCommand", command, Collections.emptyMap()))
+				.when(command)
 				.expectEvents(new FolderDeletedEvent(folderId));
 	}
 
@@ -66,7 +64,7 @@ public class FolderCommandHandlerTest {
 	public void shouldSendParameterAddedToFolderEventWhenAddParameterToFolderCommand() {
 		final AddParametersToFolderCommand command = new AddParametersToFolderCommand(folderId, parameters);
 		fixture.given(new FolderCreatedEvent(folderId, NAME, null))
-				.when(new GenericCommandMessage<>("addParametersToFolderCommand", command, Collections.emptyMap()))
+				.when(command)
 				.expectEvents(new ParametersAddedToFolderEvent(folderId, parameters));
 	}
 
@@ -76,7 +74,7 @@ public class FolderCommandHandlerTest {
 		removeParameters.add(new StringFolderParameter("parameter2", "value2"));
 		final RemoveParameterFromFolderCommand command = new RemoveParameterFromFolderCommand(folderId, removeParameters);
 		fixture.given(new FolderCreatedEvent(folderId, NAME, null), new ParametersAddedToFolderEvent(folderId, parameters))
-				.when(new GenericCommandMessage<>("removeParametersFromFolderCommand", command, Collections.emptyMap()))
+				.when(command)
 				.expectEvents(new ParametersRemovedFromFolderEvent(folderId, removeParameters));
 
 	}

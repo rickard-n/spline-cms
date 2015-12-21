@@ -1,14 +1,12 @@
 package se.spline.api.request.folder;
 
-import com.wordnik.swagger.annotations.ApiModel;
-import com.wordnik.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
-@ApiModel(value = "Folder", description = "Folder representation.")
+//@ApiModel(value = "Folder", description = "Folder representation.")
 public class FolderRequest {
 
 	@NotBlank(message = "Name must not be blank!")
-	@ApiModelProperty(required = true)
+	//@ApiModelProperty(required = true)
 	String name;
 	String id;
 	String parentId;
