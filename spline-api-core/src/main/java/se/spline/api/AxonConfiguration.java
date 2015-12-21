@@ -1,5 +1,7 @@
 package se.spline.api;
 
+import com.mongodb.Mongo;
+import com.mongodb.ServerAddress;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.CommandDispatchInterceptor;
 import org.axonframework.commandhandling.CommandHandlerInterceptor;
@@ -11,18 +13,18 @@ import org.axonframework.commandhandling.interceptors.LoggingInterceptor;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.SimpleEventBus;
 import org.axonframework.eventstore.EventStore;
-import org.axonframework.eventstore.fs.EventFileResolver;
-import org.axonframework.eventstore.fs.FileSystemEventStore;
-import org.axonframework.eventstore.fs.SimpleEventFileResolver;
+import org.axonframework.eventstore.mongo.DefaultMongoTemplate;
+import org.axonframework.eventstore.mongo.MongoEventStore;
+import org.axonframework.eventstore.mongo.MongoTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -58,12 +60,20 @@ public class AxonConfiguration {
 		return handler;
 	}
     */
-	@Bean
+
+    @Bean
+    public MongoTemplate mongoTemplate() throws UnknownHostException {
+        return new DefaultMongoTemplate(mongo());
+    }
+
+    private Mongo mongo() throws UnknownHostException {
+        return new Mongo(Collections.singletonList(new ServerAddress("192.168.99.100", 27017)));
+    }
+
+    @Bean
 	public EventStore eventStore() throws IOException {
-		final Path tempDir = Files.createTempDirectory("axon_events");
-		EventFileResolver resolver = new SimpleEventFileResolver(tempDir.toFile());
-		return new FileSystemEventStore(resolver);
-	}
+	    return new MongoEventStore(mongoTemplate());
+    }
 
 	@Bean
 	public EventBus eventBus() {

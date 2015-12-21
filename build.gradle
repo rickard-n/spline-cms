@@ -57,6 +57,7 @@ configure(subprojects) {
             dependencySet (group: 'org.axonframework', version: '2.4.3') {
                 entry 'axon-core'
                 entry 'axon-test'
+                entry 'axon-mongo'
             }
             dependencySet (group: 'io.springfox', version: '2.3.0') {
                 entry 'springfox-swagger2'
