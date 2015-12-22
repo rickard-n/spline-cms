@@ -1,7 +1,8 @@
 package se.spline.api.service;
 
 import se.spline.api.domain.folder.Folder;
-import se.spline.query.folder.FolderEntry;
+import se.spline.query.folder.FolderEntity;
+import se.spline.query.repository.RepositoryEntity;
 
 import java.util.Map;
 
@@ -10,7 +11,9 @@ public interface ApiService {
 
 	void addFolder(Folder folder);
 
-	void addProperties(FolderEntry folder, Map<String, String> properties);
+	void addProperties(FolderEntity folder, Map<String, String> properties);
 
-	void deleteFolder(FolderEntry folder);
+	void deleteFolder(FolderEntity folder);
+
+    void addRepository(RepositoryEntity repository);
 }

@@ -1,5 +1,7 @@
 dependencies {
 	compile project(':spline-api-core')
+	compile group: 'org.hibernate', name: 'hibernate-entitymanager'
+	compile group: 'org.projectlombok', name: 'lombok'
 	testCompile group: 'org.axonframework', name: 'axon-test'
 	testCompile group: 'org.mockito', name: 'mockito-core'
 	testCompile group: 'junit', name: 'junit'

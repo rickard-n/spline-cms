@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-public class FolderEntry {
+public class FolderEntity {
 
 	@Id
 	@javax.persistence.Id

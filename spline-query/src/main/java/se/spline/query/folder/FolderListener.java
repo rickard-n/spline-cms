@@ -23,20 +23,20 @@ public class FolderListener {
 
 	@EventHandler
 	public void handleFolderCreatedEvent(FolderCreatedEvent event) {
-		FolderEntry folderEntry = new FolderEntry();
-		folderEntry.setId(event.getFolderIdentifier().toString());
-		folderEntry.setName(event.getName());
+		FolderEntity folderEntity = new FolderEntity();
+		folderEntity.setId(event.getFolderIdentifier().toString());
+		folderEntity.setName(event.getName());
 		if(event.getParentId() != null) {
-			folderEntry.setParentId(event.getParentId().toString());
+			folderEntity.setParentId(event.getParentId().toString());
 		}
-		logger.debug("Save new folder to repository {}", folderEntry);
-		folderRepository.save(folderEntry);
+		logger.debug("Save new folder to repository {}", folderEntity);
+		folderRepository.save(folderEntity);
 	}
 
 	@EventHandler
 	public void handleParametersAddedToFolderEvent(ParametersAddedToFolderEvent event) {
-		final FolderEntry folderEntry = folderRepository.findOne(event.getId().toString());
-		final Map<String, String> originalProperties = folderEntry.getProperties();
+		final FolderEntity folderEntity = folderRepository.findOne(event.getId().toString());
+		final Map<String, String> originalProperties = folderEntity.getProperties();
 		final List<FolderParameter<?>> parameters = event.getParameters();
 		final Map<String, String> map = new HashMap<>(parameters.size());
 		for(FolderParameter folderParameter : parameters) {
@@ -44,8 +44,8 @@ public class FolderListener {
 		}
 
 		final Map<String, String> mergedParameters = MapMerger.mergeMaps(Stream.of(originalProperties, map));
-		folderEntry.setProperties(mergedParameters);
-		folderRepository.save(folderEntry);
+		folderEntity.setProperties(mergedParameters);
+		folderRepository.save(folderEntity);
 	}
 
 	@EventHandler

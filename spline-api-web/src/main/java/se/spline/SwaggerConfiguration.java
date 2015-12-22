@@ -3,6 +3,7 @@ package se.spline;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -24,20 +25,16 @@ public class SwaggerConfiguration {
     public Docket objectApiDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
             .select()
-            .apis(RequestHandlerSelectors.basePackage("se.spline.api.*"))
-            .paths(PathSelectors.any())
-            .build()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build()
+            .pathMapping("/")
             .apiInfo(apiInfo());
     }
+
     private ApiInfo apiInfo() {
-		return new ApiInfo(
-				applicationName,
-				"Spline CMS API.",
-                versionName,
-				null,
-				"rickard.andersson@svt.se",
-				null,
-				null
-		);
+		return new ApiInfoBuilder()
+            .title("Spline CMS API.")
+            .version(versionName).build();
 	}
 }

@@ -1,6 +1,5 @@
 package se.spline.entity.document;
 
-import org.axonframework.commandhandling.GenericCommandMessage;
 import org.axonframework.test.FixtureConfiguration;
 import org.axonframework.test.Fixtures;
 import org.junit.Before;
@@ -8,8 +7,6 @@ import org.junit.Test;
 import se.spline.api.document.CreateDocumentCommand;
 import se.spline.api.document.DocumentCreatedEvent;
 import se.spline.api.document.DocumentId;
-
-import java.util.Collections;
 
 public class DocumentCommandHandlerTest {
 
@@ -28,7 +25,7 @@ public class DocumentCommandHandlerTest {
 		CreateDocumentCommand command = new CreateDocumentCommand(new DocumentId("id"), "TestItem");
 
 		fixture.given()
-				.when(new GenericCommandMessage<>("createDocumentCommand", command, Collections.emptyMap()))
+				.when(command)
 				.expectEvents(new DocumentCreatedEvent(new DocumentId("id"), "TestItem"));
 
 	}

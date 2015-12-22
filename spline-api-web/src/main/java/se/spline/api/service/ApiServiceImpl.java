@@ -10,7 +10,9 @@ import se.spline.api.folder.command.CreateFolderCommand;
 import se.spline.api.folder.command.DeleteFolderCommand;
 import se.spline.api.folder.parameter.FolderParameter;
 import se.spline.api.folder.parameter.StringFolderParameter;
-import se.spline.query.folder.FolderEntry;
+import se.spline.api.repository.command.CreateRepositoryCommand;
+import se.spline.query.folder.FolderEntity;
+import se.spline.query.repository.RepositoryEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
-	public void addProperties(FolderEntry folder, Map<String, String> map) {
+	public void addProperties(FolderEntity folder, Map<String, String> map) {
 		final List<FolderParameter<?>> prop = new ArrayList<>(map.size());
 		for(Map.Entry<String, String> entry : map.entrySet()) {
 			prop.add(new StringFolderParameter(entry.getKey(), entry.getValue()));
@@ -41,8 +43,13 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
-	public void deleteFolder(FolderEntry folder) {
+	public void deleteFolder(FolderEntity folder) {
 		final DeleteFolderCommand command = new DeleteFolderCommand(new FolderId(folder.getId()));
 		commandGateway.sendAndWait(command);
 	}
+
+    @Override
+    public void addRepository(RepositoryEntity repository) {
+        commandGateway.sendAndWait(new CreateRepositoryCommand(repository.getId(), repository.getName()));
+    }
 }

@@ -2,6 +2,7 @@ dependencies {
 	compile project(':folder')
 	compile project(':document')
 	compile project(':relationship')
+	compile project(':repository')
 	compile project(':spline-api-core')
 	compile project(':spline-query')
 

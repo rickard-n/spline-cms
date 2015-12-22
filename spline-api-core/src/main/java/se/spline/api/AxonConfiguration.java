@@ -62,7 +62,7 @@ public class AxonConfiguration {
     */
 
     @Bean
-    public MongoTemplate mongoTemplate() throws UnknownHostException {
+    public MongoTemplate eventMongoTemplate() throws UnknownHostException {
         return new DefaultMongoTemplate(mongo());
     }
 
@@ -72,10 +72,10 @@ public class AxonConfiguration {
 
     @Bean
 	public EventStore eventStore() throws IOException {
-	    return new MongoEventStore(mongoTemplate());
+	    return new MongoEventStore(eventMongoTemplate());
     }
 
-	@Bean
+    @Bean
 	public EventBus eventBus() {
 		return new SimpleEventBus();
 	}

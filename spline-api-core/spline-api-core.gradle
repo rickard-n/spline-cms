@@ -2,4 +2,5 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-context'
 	compile group: 'org.axonframework', name: 'axon-core'
 	compile group: 'org.axonframework', name: 'axon-mongo'
+    compile group: 'org.projectlombok', name: 'lombok'
 }

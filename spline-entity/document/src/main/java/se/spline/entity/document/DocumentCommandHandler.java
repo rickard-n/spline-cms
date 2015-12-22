@@ -11,15 +11,15 @@ public class DocumentCommandHandler {
 
 	private Repository<Document> repository;
 
-	@CommandHandler(commandName = "createDocumentCommand")
-	public void handleCreateFolder(CreateDocumentCommand command) {
-		Document document = new Document(command.getDocumentId(),
-				command.getName());
-		repository.add(document);
-	}
-
 	@Autowired
 	public void setRepository(Repository<Document> repository) {
 		this.repository = repository;
 	}
+
+    @CommandHandler
+    public void handleCreateFolder(CreateDocumentCommand command) {
+        Document document = new Document(command.getDocumentId(),
+            command.getName());
+        repository.add(document);
+    }
 }

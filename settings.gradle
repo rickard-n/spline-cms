@@ -7,7 +7,7 @@ def projects = [
 		[
 				directory : 'spline-entity',
 				prefix : '',
-				projects : ['folder','document','relationship','type']
+				projects : ['repository','folder','document','relationship','type']
 		]
 ]
 

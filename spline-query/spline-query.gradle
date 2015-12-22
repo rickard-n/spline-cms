@@ -1,7 +1,8 @@
 dependencies {
 	compile project(':spline-core')
 	compile project(':spline-api-core')
-	compile group: 'org.springframework.data', name: 'spring-data-jpa'
+	//compile group: 'org.springframework.data', name: 'spring-data-jpa'
+	compile group: 'org.springframework.data', name: 'spring-data-mongodb'
 	compile group: 'org.hibernate', name: 'hibernate-entitymanager'
 	compile group: 'com.h2database', name: 'h2'
 }

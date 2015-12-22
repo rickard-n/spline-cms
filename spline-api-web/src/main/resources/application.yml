@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: spline-api
+    version: ${VERSION:1.0-snapshot}
+  jpa:
+    hibernate:
+        ddl-auto: create-drop
+        naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    database: H2
+    show-sql: true
+info:
+  app:
+    name: ${spring.application.name}
+    version: ${spring.application.version}
+
+server:
+    port: 8080
+
+mongo:
+    hostQuery: 192.168.99.100:27017
+    databaseQuery: axon_query
