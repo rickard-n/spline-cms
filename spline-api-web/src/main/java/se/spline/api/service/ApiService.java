@@ -1,8 +1,8 @@
 package se.spline.api.service;
 
 import se.spline.api.domain.folder.Folder;
+import se.spline.api.repository.RepositoryMetaData;
 import se.spline.query.folder.FolderEntity;
-import se.spline.query.repository.RepositoryEntity;
 
 import java.util.Map;
 
@@ -15,5 +15,5 @@ public interface ApiService {
 
 	void deleteFolder(FolderEntity folder);
 
-    void addRepository(RepositoryEntity repository);
+    void addRepository(RepositoryMetaData repository);
 }

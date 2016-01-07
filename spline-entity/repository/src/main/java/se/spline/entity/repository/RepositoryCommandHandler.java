@@ -4,10 +4,10 @@ import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.spline.api.repository.command.CreateRepositoryCommand;
+import se.spline.api.repository.command.UpdateRepositoryWithRootFolderCommand;
 
 @Component
 public class RepositoryCommandHandler {
-
     private org.axonframework.repository.Repository<Repository> repository;
 
     @Autowired
@@ -18,7 +18,13 @@ public class RepositoryCommandHandler {
     @CommandHandler
     public void handleCreateRepository(CreateRepositoryCommand command) {
         Repository repository = new Repository(command.getRepositoryId(),
-            command.getName());
+            command.getMetaData());
         this.repository.add(repository);
+    }
+
+    @CommandHandler
+    public void handle(UpdateRepositoryWithRootFolderCommand command) {
+        final Repository repository = this.repository.load(command.getRepositoryId());
+        repository.changeRootFolder(command.getFolderId());
     }
 }

@@ -3,4 +3,7 @@ dependencies {
 	compile group: 'org.axonframework', name: 'axon-core'
 	compile group: 'org.axonframework', name: 'axon-mongo'
     compile group: 'org.projectlombok', name: 'lombok'
+
+    testCompile group: 'org.mockito', name: 'mockito-core'
+    testCompile group: 'junit', name: 'junit'
 }

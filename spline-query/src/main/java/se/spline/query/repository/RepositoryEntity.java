@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Builder;
 import org.springframework.data.annotation.Id;
+import se.spline.api.folder.FolderId;
 import se.spline.api.repository.RepositoryId;
 
 import javax.persistence.Entity;
@@ -22,6 +23,7 @@ public class RepositoryEntity {
     @javax.persistence.Id
     private RepositoryId id;
     private String name;
-
+    private String description;
+    private FolderId rootFolder;
 
 }

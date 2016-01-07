@@ -16,6 +16,8 @@ import org.axonframework.eventstore.EventStore;
 import org.axonframework.eventstore.mongo.DefaultMongoTemplate;
 import org.axonframework.eventstore.mongo.MongoEventStore;
 import org.axonframework.eventstore.mongo.MongoTemplate;
+import org.axonframework.saga.SagaRepository;
+import org.axonframework.saga.repository.mongo.MongoSagaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -63,7 +65,9 @@ public class AxonConfiguration {
 
     @Bean
     public MongoTemplate eventMongoTemplate() throws UnknownHostException {
-        return new DefaultMongoTemplate(mongo());
+        final DefaultMongoTemplate defaultMongoTemplate = new DefaultMongoTemplate(mongo());
+
+        return defaultMongoTemplate;
     }
 
     private Mongo mongo() throws UnknownHostException {
@@ -73,6 +77,11 @@ public class AxonConfiguration {
     @Bean
 	public EventStore eventStore() throws IOException {
 	    return new MongoEventStore(eventMongoTemplate());
+    }
+
+    @Bean
+    public SagaRepository mongoSagaRepository() throws UnknownHostException {
+        return new MongoSagaRepository(new org.axonframework.saga.repository.mongo.DefaultMongoTemplate(mongo()));
     }
 
     @Bean

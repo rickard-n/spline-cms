@@ -17,6 +17,7 @@ import lombok.experimental.Builder;
 public class Repository {
     private final String id;
     private final String name;
+    private final String folderId;
 
 
     @JsonPOJOBuilder(withPrefix = "")

@@ -49,3 +49,11 @@
 	- AddParameters
 	- DeleteParameters
 
+
+Request              Domain                         Command                     Event                                   Entry
+
+RepositoryRequest -> Repository               ->    CreateRepositoryCommand     RepositoryCreatedEvent
+                        -  id                                                           ->
+                        - metadata                                              CreateRootFolderCommand
+                               - name                                           UpdateRepositoryRootFolderComammand
+                               - description

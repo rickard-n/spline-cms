@@ -6,12 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.spline.api.folder.command.AddParametersToFolderCommand;
 import se.spline.api.folder.command.CreateFolderCommand;
+import se.spline.api.folder.command.CreateRootFolderCommand;
 import se.spline.api.folder.command.DeleteFolderCommand;
 import se.spline.api.folder.command.RemoveParameterFromFolderCommand;
 
 @Component
 public class FolderCommandHandler {
 	private Repository<Folder> repository;
+
+    @CommandHandler
+    public void handleCreateRootFolder(CreateRootFolderCommand command) {
+        final Folder folder = new RootFolder(command.getFolderId(), command.getRepositoryData());
+        repository.add(folder);
+    }
 
 	@CommandHandler
 	public void handleCreateFolder(CreateFolderCommand command) {

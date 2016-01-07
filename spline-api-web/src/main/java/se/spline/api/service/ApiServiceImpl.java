@@ -10,9 +10,10 @@ import se.spline.api.folder.command.CreateFolderCommand;
 import se.spline.api.folder.command.DeleteFolderCommand;
 import se.spline.api.folder.parameter.FolderParameter;
 import se.spline.api.folder.parameter.StringFolderParameter;
+import se.spline.api.repository.RepositoryId;
+import se.spline.api.repository.RepositoryMetaData;
 import se.spline.api.repository.command.CreateRepositoryCommand;
 import se.spline.query.folder.FolderEntity;
-import se.spline.query.repository.RepositoryEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class ApiServiceImpl implements ApiService {
 	}
 
     @Override
-    public void addRepository(RepositoryEntity repository) {
-        commandGateway.sendAndWait(new CreateRepositoryCommand(repository.getId(), repository.getName()));
+    public void addRepository(RepositoryMetaData repository) {
+        final Object o = commandGateway.sendAndWait(new CreateRepositoryCommand(new RepositoryId(), repository));
     }
 }

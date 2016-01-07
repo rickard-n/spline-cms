@@ -2,13 +2,12 @@ package se.spline.api.request.repository;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import se.spline.api.repository.RepositoryId;
-import se.spline.query.repository.RepositoryEntity;
+import se.spline.api.repository.RepositoryMetaData;
 
 @Component
-public class RepositoryConverter implements Converter<RepositoryRequest, RepositoryEntity> {
+public class RepositoryConverter implements Converter<RepositoryRequest, RepositoryMetaData> {
     @Override
-    public RepositoryEntity convert(RepositoryRequest source) {
-        return RepositoryEntity.builder().id(new RepositoryId()).name(source.getName()).build();
+    public RepositoryMetaData convert(RepositoryRequest source) {
+        return RepositoryMetaData.builder().name(source.getName()).description(source.getDescription()).build();
     }
 }

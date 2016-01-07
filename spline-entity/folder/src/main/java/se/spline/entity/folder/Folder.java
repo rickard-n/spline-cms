@@ -18,7 +18,7 @@ import java.util.List;
 public class Folder extends AbstractAnnotatedAggregateRoot<FolderId> {
 
 	@AggregateIdentifier
-	private FolderId id;
+	protected FolderId id;
 
 	public Folder(FolderId id, String name, FolderId parentId) {
 		apply(new FolderCreatedEvent(id, name, parentId));

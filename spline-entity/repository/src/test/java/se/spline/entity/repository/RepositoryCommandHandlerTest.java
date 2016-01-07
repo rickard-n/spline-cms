@@ -5,6 +5,7 @@ import org.axonframework.test.Fixtures;
 import org.junit.Before;
 import org.junit.Test;
 import se.spline.api.repository.RepositoryId;
+import se.spline.api.repository.RepositoryMetaData;
 import se.spline.api.repository.command.CreateRepositoryCommand;
 import se.spline.api.repository.event.RepositoryCreatedEvent;
 
@@ -23,11 +24,11 @@ public class RepositoryCommandHandlerTest {
     @Test
     public void shouldCreateNewRepository() {
         final RepositoryId id = new RepositoryId();
-        CreateRepositoryCommand command = new CreateRepositoryCommand(id, "TestItem");
+        final RepositoryMetaData repositoryMetaData = RepositoryMetaData.builder().name("TestItem").build();
+        CreateRepositoryCommand command = new CreateRepositoryCommand(id, repositoryMetaData);
 
         fixture.given()
             .when(command)
-            .expectEvents(new RepositoryCreatedEvent(id, "TestItem"));
-
+            .expectEvents(new RepositoryCreatedEvent(id, repositoryMetaData));
     }
 }
