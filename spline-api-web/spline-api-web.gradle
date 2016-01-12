@@ -11,8 +11,12 @@ dependencies {
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker'
-	compile group: 'org.springframework', name: 'springloaded'
+
+
+    compile group: 'io.katharsis', name: 'katharsis-spring'
+    compile group: 'org.reflections', name: 'reflections'
+
+
 }
 
 apply plugin: 'spring-boot'

@@ -1,3 +1,21 @@
+curl -i -H "Accept: application/vnd.api+json" \
+ -H "Content-Type: application/vnd.api+json" \
+  -X POST -d '{
+        "data": {
+            "type": "repository",
+            "attributes": {
+                "name": "svtse"
+            }
+        }
+        }' \
+  http://localhost:8081/repository
+
+
+curl -i -H "Accept: application/vnd.api+json" \
+ -H "Content-Type: application/vnd.api+json" \
+  -X POST -d '{"data": { "type": "folder", "attributes": {"name": "subfolder"}, "relationships": { "parent": {"data": {"type": "folder", "id": "363665a9-7bce-412a-b765-7d7950aac648"}}}}}' \
+  http://localhost:8081/folder
+
 - Consul-spring boot config. (Spring-boot-cloud)
 
 - Type (id (default), name*, namespace, queryName, parent*)
@@ -57,3 +75,9 @@ RepositoryRequest -> Repository               ->    CreateRepositoryCommand     
                         - metadata                                              CreateRootFolderCommand
                                - name                                           UpdateRepositoryRootFolderComammand
                                - description
+
+
+TODOS:
+
+- Extends Katharsis to handle builders instead of empty constuctor.
+- Swagger to Katharsis.

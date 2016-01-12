@@ -1,71 +1,50 @@
 package se.spline.query.folder;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Builder;
+import lombok.experimental.Delegate;
 import org.springframework.data.annotation.Id;
+import se.spline.api.folder.FolderId;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.MapKeyColumn;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Entity
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class FolderEntity {
 
 	@Id
 	@javax.persistence.Id
-	private String id;
+	private FolderId id;
 	private String name;
-	private String parentId;
+	private FolderId parentId;
+
+    private interface FolderCollection {
+        boolean add(FolderId item);
+        boolean remove(FolderId item);
+        boolean addAll(List<FolderId> items);
+    }
+    @Delegate(types={FolderCollection.class})
+    private List<FolderId> children = new ArrayList<>();
 
 	@ElementCollection()
 	@MapKeyColumn(name="key")
 	@Column(name="value")
 	private Map<String, String> properties;
 
-	public String getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getParentId() {
-		return parentId;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
-
-	public Map<String, String> getProperties() {
-		if(properties == null) {
-			properties = new HashMap<>();
-		}
-		return properties;
-	}
-
-	public void setProperties(Map<String, String> properties) {
-		this.properties = properties;
-	}
-
-	@Override
-	public String toString() {
-		return "FolderEntry{" +
-				"id='" + id + '\'' +
-				", name='" + name + '\'' +
-				", parentId='" + parentId + '\'' +
-				", properties=" + properties +
-				'}';
-	}
 
 }

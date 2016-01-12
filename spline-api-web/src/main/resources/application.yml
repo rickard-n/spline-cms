@@ -14,8 +14,14 @@ info:
     version: ${spring.application.version}
 
 server:
-    port: 8080
+    port: 8081
 
 mongo:
     hostQuery: 192.168.99.100:27017
     databaseQuery: axon_query
+
+
+katharsis:
+    resourcePackage: se.spline.api
+    domainName: http://localhost:${server.port}
+    pathPrefix: /api
