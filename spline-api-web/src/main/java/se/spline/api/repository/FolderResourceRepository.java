@@ -10,8 +10,8 @@ import se.spline.api.folder.command.CreateFolderCommand;
 import se.spline.api.folder.command.DeleteFolderCommand;
 import se.spline.api.model.Folder;
 import se.spline.api.repository.builder.FolderRelationBuilder;
-import se.spline.query.folder.FolderEntity;
-import se.spline.query.folder.FolderQueryRepository;
+import se.spline.query.neo4j.folder.FolderEntity;
+import se.spline.query.neo4j.folder.FolderQueryRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +30,7 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
 
     @Override
     public Folder findOne(String s, QueryParams queryParams) {
-        final FolderEntity entity = folderQueryRepository.findOne(buildFolderIdFromStringIdentifier(s));
+        final FolderEntity entity = folderQueryRepository.findByFolderId(buildFolderIdFromStringIdentifier(s).getIdentifier());
         return buildFolderFromEntity(entity);
     }
 
@@ -42,10 +42,11 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
 
     @Override
     public Iterable<Folder> findAll(Iterable<String> strings, QueryParams queryParams) {
-        final List<FolderId> ids = StreamSupport.stream(strings.spliterator(), false)
+        final List<String> ids = StreamSupport.stream(strings.spliterator(), false)
             .map(this::buildFolderIdFromStringIdentifier)
+            .map(FolderId::getIdentifier)
             .collect(Collectors.toList());
-        final Iterable<FolderEntity> entities = folderQueryRepository.findAll(ids);
+        final Iterable<FolderEntity> entities = folderQueryRepository.findAllByFolderId(ids);
         return buildFolderListFromEntities(entities);
     }
 
@@ -74,7 +75,10 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
     private Folder buildFolderFromEntity(FolderEntity entity) {
         final List<Folder> children = getChildren(entity);
         final Folder.FolderBuilder builder = Folder.builder()
-            .id(entity.getId().getIdentifier())
+            .id(entity.getFolderId())
+            .created(entity.getCreated())
+            .updated(entity.getUpdated())
+            .version(entity.getVersion())
             .properties(entity.getProperties());
         if(entity.getParentId() != null) {
             builder.parent(FolderRelationBuilder.builder().id(entity.getParentId()).build());
@@ -89,7 +93,7 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
             return Collections.emptyList();
         }
         return entity.getChildren().stream()
-            .map(id -> FolderRelationBuilder.builder().id(id).build())
+            .map(id -> FolderRelationBuilder.builder().id(FolderId.builder().identifier(id.getFolderId()).build()).build())
             .collect(Collectors.toList());
     }
 

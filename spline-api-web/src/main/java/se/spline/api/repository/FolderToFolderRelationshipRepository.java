@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import se.spline.api.folder.FolderId;
 import se.spline.api.model.Folder;
 import se.spline.api.repository.builder.FolderRelationBuilder;
-import se.spline.query.folder.FolderEntity;
-import se.spline.query.folder.FolderQueryRepository;
+import se.spline.query.neo4j.folder.FolderEntity;
+import se.spline.query.neo4j.folder.FolderQueryRepository;
 
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -41,7 +41,7 @@ public class FolderToFolderRelationshipRepository implements RelationshipReposit
 
     @Override
     public Folder findOneTarget(String sourceId, String fieldName, QueryParams queryParams) {
-        final FolderEntity folderEntity = folderQueryRepository.findOne(FolderId.builder().identifier(sourceId).build());
+        final FolderEntity folderEntity = folderQueryRepository.findByFolderId(FolderId.builder().identifier(sourceId).build().getIdentifier());
         if("parent".equals(fieldName)) {
             return FolderRelationBuilder.builder().id(folderEntity.getParentId()).build();
         }
@@ -51,12 +51,12 @@ public class FolderToFolderRelationshipRepository implements RelationshipReposit
 
     @Override
     public Iterable<Folder> findManyTargets(String sourceId, String fieldName, QueryParams queryParams) {
-        final FolderEntity folderEntity = folderQueryRepository.findOne(FolderId.builder().identifier(sourceId).build());
+        final FolderEntity folderEntity = folderQueryRepository.findByFolderId(FolderId.builder().identifier(sourceId).build().getIdentifier());
         if("children".equals(fieldName)) {
             return folderEntity.getChildren().stream()
-                .map(id -> FolderRelationBuilder.builder().id(id).build())
+                .map(id -> FolderRelationBuilder.builder().id(FolderId.builder().identifier(id.getFolderId()).build()).build())
                 .collect(Collectors.toList());
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 }

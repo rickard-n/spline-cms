@@ -4,7 +4,7 @@ dependencies {
 	compile project(':relationship')
 	compile project(':repository')
 	compile project(':spline-api-core')
-	compile project(':spline-query')
+	compile project(':spline-query-neo4j')
 
     compile group: 'io.springfox', name: 'springfox-swagger2'
     compile group: 'io.springfox', name: 'springfox-swagger-ui'

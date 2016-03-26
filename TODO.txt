@@ -13,7 +13,22 @@ curl -i -H "Accept: application/vnd.api+json" \
 
 curl -i -H "Accept: application/vnd.api+json" \
  -H "Content-Type: application/vnd.api+json" \
-  -X POST -d '{"data": { "type": "folder", "attributes": {"name": "subfolder"}, "relationships": { "parent": {"data": {"type": "folder", "id": "363665a9-7bce-412a-b765-7d7950aac648"}}}}}' \
+  -X POST -d '{
+        "data": {
+            "type": "folder",
+            "attributes": {
+                "name": "nyheter"
+            },
+            "relationships": {
+                "parent": {
+                    "data": {
+                        "type": "folder",
+                        "id": "363665a9-7bce-412a-b765-7d7950aac648"
+                    }
+                }
+            }
+        }
+  }' \
   http://localhost:8081/folder
 
 - Consul-spring boot config. (Spring-boot-cloud)

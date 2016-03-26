@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 import se.spline.api.model.Folder;
 import se.spline.api.model.Repository;
 import se.spline.api.repository.command.CreateRepositoryCommand;
-import se.spline.query.repository.RepositoryEntity;
-import se.spline.query.repository.RepositoryQueryRepository;
+import se.spline.query.neo4j.repository.RepositoryEntity;
+import se.spline.query.neo4j.repository.RepositoryQueryRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -29,7 +30,7 @@ public class RepositoryResourceRepository implements ResourceRepository<Reposito
 
     @Override
     public Repository findOne(String s, QueryParams queryParams) {
-        final RepositoryEntity entity = repositoryQueryRepository.findOne(buildRepositoryIdFromStringIdentifier(s));
+        final RepositoryEntity entity = repositoryQueryRepository.findByRepositoryId(buildRepositoryIdFromStringIdentifier(s).getIdentifier());
         return buildRepositoryFromEntity(entity);
     }
 
@@ -44,7 +45,7 @@ public class RepositoryResourceRepository implements ResourceRepository<Reposito
         final List<RepositoryId> ids = StreamSupport.stream(strings.spliterator(), false)
             .map(this::buildRepositoryIdFromStringIdentifier)
             .collect(Collectors.toList());
-        final Iterable<RepositoryEntity> entities = repositoryQueryRepository.findAll(ids);
+        final Iterable<RepositoryEntity> entities = Collections.emptyList();//repositoryQueryRepository.findAll(ids);
         return buildRepositoryListFromEntities(entities);
     }
 
@@ -70,9 +71,9 @@ public class RepositoryResourceRepository implements ResourceRepository<Reposito
     }
 
     private Repository buildRepositoryFromEntity(RepositoryEntity entity) {
-        final Folder folder = repositoryToFolderRelationRepository.findOneTarget(entity.getId().getIdentifier(), null, null);
+        final Folder folder = repositoryToFolderRelationRepository.findOneTarget(entity.getRepositoryId(), null, null);
         return Repository.builder()
-            .id(entity.getId().getIdentifier())
+            .id(entity.getRepositoryId())
             .name(entity.getName())
             .rootFolder(folder)
             .build();

@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.spline.api.model.Folder;
 import se.spline.api.model.Repository;
-import se.spline.query.folder.FolderEntity;
-import se.spline.query.folder.FolderQueryRepository;
-import se.spline.query.repository.RepositoryEntity;
-import se.spline.query.repository.RepositoryQueryRepository;
+import se.spline.query.neo4j.folder.FolderEntity;
+import se.spline.query.neo4j.folder.FolderQueryRepository;
+import se.spline.query.neo4j.repository.RepositoryEntity;
+import se.spline.query.neo4j.repository.RepositoryQueryRepository;
 
 import java.util.Collections;
 
@@ -44,15 +44,15 @@ public class RepositoryToFolderRelationRepository implements RelationshipReposit
 
     @Override
     public Folder findOneTarget(String sourceId, String fieldName, QueryParams queryParams) {
-        final RepositoryEntity repositoryEntity = repositoryQueryRepository.findOne(RepositoryId.builder().identifier(sourceId).build());
+        final RepositoryEntity repositoryEntity = repositoryQueryRepository.findByRepositoryId(RepositoryId.builder().identifier(sourceId).build().getIdentifier());
         if(repositoryEntity == null) {
             return null;
         }
-        final FolderEntity folderEntity = folderQueryRepository.findOne(repositoryEntity.getRootFolder());
+        final FolderEntity folderEntity = folderQueryRepository.findByFolderId(repositoryEntity.getRootFolder().getFolderId());
         if(folderEntity == null) {
             return null;
         }
-        return Folder.builder().id(folderEntity.getId().getIdentifier()).build();
+        return Folder.builder().id(folderEntity.getFolderId()).build();
     }
 
     @Override

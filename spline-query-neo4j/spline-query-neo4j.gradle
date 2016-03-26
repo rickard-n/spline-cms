@@ -1,0 +1,10 @@
+repositories {
+    maven {
+        url 'http://m2.neo4j.org/content/repositories/releases/'
+    }
+}
+dependencies {
+	compile project(':spline-core')
+	compile project(':spline-api-core')
+	compile group: 'org.springframework.data', name: 'spring-data-neo4j'
+}

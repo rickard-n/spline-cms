@@ -2,7 +2,7 @@ def projects = [
 		[
 				directory : '',
 				prefix : '',
-				projects : ['spline-api-web', 'spline-api-core','spline-core', 'spline-query']
+				projects : ['spline-api-web', 'spline-api-core','spline-core', 'spline-query-neo4j']
 		],
 		[
 				directory : 'spline-entity',

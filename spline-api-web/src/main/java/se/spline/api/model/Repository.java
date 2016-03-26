@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Builder;
 
+import java.util.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,6 +23,8 @@ public class Repository {
     @JsonApiToOne
     private Folder rootFolder;
 
-
+    private Date created;
+    private Date updated;
+    private Long version;
 
 }

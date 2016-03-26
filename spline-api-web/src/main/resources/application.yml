@@ -8,6 +8,8 @@ spring:
         naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
     database: H2
     show-sql: true
+  jackson:
+    serialization-inclusion: non_null
 info:
   app:
     name: ${spring.application.name}
@@ -20,6 +22,10 @@ mongo:
     hostQuery: 192.168.99.100:27017
     databaseQuery: axon_query
 
+neo4j:
+    host: 192.168.99.100:7474
+    username: neo4j
+    password: password
 
 katharsis:
     resourcePackage: se.spline.api
