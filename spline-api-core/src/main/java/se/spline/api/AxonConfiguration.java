@@ -21,7 +21,6 @@ import org.axonframework.saga.repository.mongo.MongoSagaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -30,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-@ImportResource(value = {"classpath:/basic-config.xml", "classpath*:/entity/*-config.xml"})
 public class AxonConfiguration {
 
 
