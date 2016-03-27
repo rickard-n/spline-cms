@@ -1,7 +1,6 @@
 spring:
   application:
     name: spline-api
-    version: ${VERSION:1.0-snapshot}
   jpa:
     hibernate:
         ddl-auto: create-drop
@@ -13,7 +12,7 @@ spring:
 info:
   app:
     name: ${spring.application.name}
-    version: ${spring.application.version}
+    version: ${VERSION:1.0-snapshot}
 
 server:
     port: 8081

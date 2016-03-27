@@ -95,4 +95,13 @@ RepositoryRequest -> Repository               ->    CreateRepositoryCommand     
 TODOS:
 
 - Extends Katharsis to handle builders instead of empty constuctor.
-- Swagger to Katharsis.
+- Swagger to Katharsis. https://github.com/woonsan/swagger-katharsis OR https://github.com/meshuga/katharsis-springfox
+    (OR DO IT YOURSELF)
+     /*
+            final List<String> paths = resourceRegistry.getResources().entrySet().stream()
+                .map(classRegistryEntryEntry -> resourceRegistry.getResourceUrl(classRegistryEntryEntry.getKey()))
+                .collect(Collectors.toList());
+
+            System.out.println("*************** " + paths);
+            */
+

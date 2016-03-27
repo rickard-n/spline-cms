@@ -20,6 +20,7 @@ public class Repository {
     @JsonApiId
     private String id;
     private String name;
+    private String description;
     @JsonApiToOne
     private Folder rootFolder;
 

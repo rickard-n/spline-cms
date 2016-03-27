@@ -11,7 +11,6 @@ import se.spline.api.repository.command.CreateRepositoryCommand;
 import se.spline.query.neo4j.repository.RepositoryEntity;
 import se.spline.query.neo4j.repository.RepositoryQueryRepository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -29,8 +28,8 @@ public class RepositoryResourceRepository implements ResourceRepository<Reposito
     private RepositoryToFolderRelationRepository repositoryToFolderRelationRepository;
 
     @Override
-    public Repository findOne(String s, QueryParams queryParams) {
-        final RepositoryEntity entity = repositoryQueryRepository.findByRepositoryId(buildRepositoryIdFromStringIdentifier(s).getIdentifier());
+    public Repository findOne(String id, QueryParams queryParams) {
+        final RepositoryEntity entity = repositoryQueryRepository.findByRepositoryId(id);
         return buildRepositoryFromEntity(entity);
     }
 
@@ -41,22 +40,22 @@ public class RepositoryResourceRepository implements ResourceRepository<Reposito
     }
 
     @Override
-    public Iterable<Repository> findAll(Iterable<String> strings, QueryParams queryParams) {
-        final List<RepositoryId> ids = StreamSupport.stream(strings.spliterator(), false)
-            .map(this::buildRepositoryIdFromStringIdentifier)
-            .collect(Collectors.toList());
-        final Iterable<RepositoryEntity> entities = Collections.emptyList();//repositoryQueryRepository.findAll(ids);
+    public Iterable<Repository> findAll(Iterable<String> ids, QueryParams queryParams) {
+        final Iterable<RepositoryEntity> entities = repositoryQueryRepository.findAllByRepositoryId(ids);
         return buildRepositoryListFromEntities(entities);
     }
 
     @Override
     public void delete(String s) {
-
+        // TODO: Send delete command
     }
 
     @Override
     public Repository save(Repository entity) {
-        final RepositoryMetaData metaData = RepositoryMetaData.builder().name(entity.getName()).build();
+        final RepositoryMetaData metaData = RepositoryMetaData.builder()
+            .name(entity.getName())
+            .description(entity.getDescription())
+            .build();
         return commandGateway.sendAndWait(new CreateRepositoryCommand(new RepositoryId(), metaData));
     }
 

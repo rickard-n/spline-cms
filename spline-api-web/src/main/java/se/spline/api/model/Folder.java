@@ -1,6 +1,7 @@
 package se.spline.api.model;
 
 import io.katharsis.resource.annotations.JsonApiId;
+import io.katharsis.resource.annotations.JsonApiLookupIncludeAutomatically;
 import io.katharsis.resource.annotations.JsonApiResource;
 import io.katharsis.resource.annotations.JsonApiToMany;
 import io.katharsis.resource.annotations.JsonApiToOne;
@@ -28,8 +29,10 @@ public class Folder {
     private Long version;
 
     @JsonApiToOne
+    @JsonApiLookupIncludeAutomatically
     private Folder parent;
     @JsonApiToMany(lazy = false)
+    @JsonApiLookupIncludeAutomatically
     private List<Folder> children;
     private Map<String, String> properties;
 
