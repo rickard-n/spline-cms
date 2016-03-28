@@ -10,6 +10,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean;
 import org.axonframework.commandhandling.interceptors.BeanValidationInterceptor;
 import org.axonframework.commandhandling.interceptors.LoggingInterceptor;
+import org.axonframework.contextsupport.spring.AnnotationDriven;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.SimpleEventBus;
 import org.axonframework.eventstore.EventStore;
@@ -29,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
+@AnnotationDriven
 public class AxonConfiguration {
 
 

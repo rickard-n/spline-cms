@@ -29,6 +29,5 @@ public class SplineNeo4jConfiguration extends Neo4jConfiguration {
     @Override
     public SessionFactory getSessionFactory() {
         return new SessionFactory("se.spline.query.neo4j");
-
     }
 }

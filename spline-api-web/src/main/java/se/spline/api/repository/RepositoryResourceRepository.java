@@ -5,9 +5,12 @@ import io.katharsis.repository.ResourceRepository;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import se.spline.api.model.Folder;
 import se.spline.api.model.Repository;
 import se.spline.api.repository.command.CreateRepositoryCommand;
+import se.spline.api.repository.command.DeleteRepositoryCommand;
+import se.spline.api.repository.command.UpdateMetaDataForRepositoryCommand;
 import se.spline.query.neo4j.repository.RepositoryEntity;
 import se.spline.query.neo4j.repository.RepositoryQueryRepository;
 
@@ -46,8 +49,8 @@ public class RepositoryResourceRepository implements ResourceRepository<Reposito
     }
 
     @Override
-    public void delete(String s) {
-        // TODO: Send delete command
+    public void delete(String id) {
+        commandGateway.sendAndWait(new DeleteRepositoryCommand(RepositoryId.builder().identifier(id).build()));
     }
 
     @Override
@@ -56,7 +59,13 @@ public class RepositoryResourceRepository implements ResourceRepository<Reposito
             .name(entity.getName())
             .description(entity.getDescription())
             .build();
-        return commandGateway.sendAndWait(new CreateRepositoryCommand(new RepositoryId(), metaData));
+        if(StringUtils.isEmpty(entity.getId())) {
+            return commandGateway.sendAndWait(new CreateRepositoryCommand(new RepositoryId(), metaData));
+        } else {
+            return commandGateway.sendAndWait(
+                new UpdateMetaDataForRepositoryCommand(buildRepositoryIdFromStringIdentifier(entity.getId()), metaData)
+            );
+        }
     }
 
     private List<Repository> buildRepositoryListFromEntities(Iterable<RepositoryEntity> entities) {
@@ -74,6 +83,7 @@ public class RepositoryResourceRepository implements ResourceRepository<Reposito
         return Repository.builder()
             .id(entity.getRepositoryId())
             .name(entity.getName())
+            .description(entity.getDescription())
             .rootFolder(folder)
             .build();
     }

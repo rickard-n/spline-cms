@@ -5,7 +5,7 @@ import se.spline.api.repository.RepositoryId;
 import se.spline.api.repository.RepositoryMetaData;
 
 @Data
-public class RepositoryCreatedEvent {
+public class RepositoryMetaDataUpdatedEvent {
     private final RepositoryId id;
     private final RepositoryMetaData metaData;
 }

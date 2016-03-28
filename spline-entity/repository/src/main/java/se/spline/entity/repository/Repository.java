@@ -8,6 +8,8 @@ import se.spline.api.folder.FolderId;
 import se.spline.api.repository.RepositoryId;
 import se.spline.api.repository.RepositoryMetaData;
 import se.spline.api.repository.event.RepositoryCreatedEvent;
+import se.spline.api.repository.event.RepositoryDeletedEvent;
+import se.spline.api.repository.event.RepositoryMetaDataUpdatedEvent;
 import se.spline.api.repository.event.RepositoryRootFolderChangedEvent;
 
 @Getter
@@ -17,8 +19,9 @@ public class Repository extends AbstractAnnotatedAggregateRoot<RepositoryId> {
     private RepositoryId id;
     private RepositoryMetaData metaData;
     private FolderId rootFolder;
+    private boolean deleted;
 
-    public Repository(RepositoryId repositoryId, RepositoryMetaData metaData) {
+    Repository(RepositoryId repositoryId, RepositoryMetaData metaData) {
         apply(new RepositoryCreatedEvent(repositoryId, metaData));
     }
 
@@ -30,17 +33,39 @@ public class Repository extends AbstractAnnotatedAggregateRoot<RepositoryId> {
         return id;
     }
 
-    public void changeRootFolder(FolderId folderId) {
+    void changeRootFolder(FolderId folderId) {
         apply(new RepositoryRootFolderChangedEvent(id, folderId));
+    }
+
+    void delete() {
+        apply(new RepositoryDeletedEvent(id));
+    }
+
+    void updateMetadata(RepositoryMetaData metaData) {
+        apply(new RepositoryMetaDataUpdatedEvent(id,metaData));
     }
 
     @EventHandler
     public void handle(RepositoryCreatedEvent event) {
         this.id = event.getId();
+        this.metaData = RepositoryMetaData.builder()
+                .name(event.getMetaData()
+                .getName()).description(event.getMetaData().getDescription())
+            .build();
     }
 
     @EventHandler
     public void handle(RepositoryRootFolderChangedEvent event) {
         this.rootFolder = event.getFolderId();
+    }
+
+    @EventHandler
+    public void handle(RepositoryDeletedEvent event) {
+        this.deleted = true;
+    }
+
+    @EventHandler
+    public void handle(RepositoryMetaDataUpdatedEvent event) {
+        this.metaData = event.getMetaData();
     }
 }

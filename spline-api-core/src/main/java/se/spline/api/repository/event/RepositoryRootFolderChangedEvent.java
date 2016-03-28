@@ -1,17 +1,11 @@
 package se.spline.api.repository.event;
 
-import lombok.Getter;
+import lombok.Data;
 import se.spline.api.folder.FolderId;
 import se.spline.api.repository.RepositoryId;
 
-@Getter
+@Data
 public class RepositoryRootFolderChangedEvent {
-    private final FolderId folderId;
     private final RepositoryId repositoryId;
-
-    public RepositoryRootFolderChangedEvent(RepositoryId repositoryId, FolderId folderId) {
-
-        this.repositoryId = repositoryId;
-        this.folderId = folderId;
-    }
+    private final FolderId folderId;
 }

@@ -4,6 +4,8 @@ import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.spline.api.repository.event.RepositoryCreatedEvent;
+import se.spline.api.repository.event.RepositoryDeletedEvent;
+import se.spline.api.repository.event.RepositoryMetaDataUpdatedEvent;
 import se.spline.api.repository.event.RepositoryRootFolderChangedEvent;
 import se.spline.query.neo4j.folder.FolderQueryRepository;
 
@@ -29,6 +31,19 @@ public class RepositoryListener {
     public void handleRepositoryRootFolderUpdate(RepositoryRootFolderChangedEvent event) {
         final RepositoryEntity repositoryEntity = repositoryQueryRepository.findByRepositoryId(event.getRepositoryId().getIdentifier());
         repositoryEntity.setRootFolder(folderQueryRepository.findByFolderId(event.getFolderId().getIdentifier()));
+        repositoryQueryRepository.save(repositoryEntity);
+    }
+
+    @EventHandler
+    public void handleRepositoryDeleted(RepositoryDeletedEvent event) {
+        repositoryQueryRepository.deleteByRepositoryId(event.getId().getIdentifier());
+    }
+
+    @EventHandler
+    public void handleRepositoryMetaDataUpdated(RepositoryMetaDataUpdatedEvent event) {
+        final RepositoryEntity repositoryEntity = repositoryQueryRepository.findByRepositoryId(event.getId().getIdentifier());
+        repositoryEntity.setName(event.getMetaData().getName());
+        repositoryEntity.setDescription(event.getMetaData().getDescription());
         repositoryQueryRepository.save(repositoryEntity);
     }
 }
