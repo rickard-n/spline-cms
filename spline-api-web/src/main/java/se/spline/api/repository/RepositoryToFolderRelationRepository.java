@@ -45,7 +45,7 @@ public class RepositoryToFolderRelationRepository implements RelationshipReposit
     @Override
     public Folder findOneTarget(String sourceId, String fieldName, QueryParams queryParams) {
         final RepositoryEntity repositoryEntity = repositoryQueryRepository.findByRepositoryId(RepositoryId.builder().identifier(sourceId).build().getIdentifier());
-        if(repositoryEntity == null) {
+        if(repositoryEntity == null || repositoryEntity.getRootFolder() == null ) {
             return null;
         }
         final FolderEntity folderEntity = folderQueryRepository.findByFolderId(repositoryEntity.getRootFolder().getFolderId());

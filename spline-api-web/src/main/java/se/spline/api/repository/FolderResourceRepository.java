@@ -9,7 +9,7 @@ import se.spline.api.folder.FolderId;
 import se.spline.api.folder.command.CreateFolderCommand;
 import se.spline.api.folder.command.DeleteFolderCommand;
 import se.spline.api.model.Folder;
-import se.spline.api.repository.builder.FolderRelationBuilder;
+import se.spline.api.repository.builder.FolderRelationFactory;
 import se.spline.query.neo4j.folder.FolderEntity;
 import se.spline.query.neo4j.folder.FolderQueryRepository;
 
@@ -29,8 +29,8 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
 
 
     @Override
-    public Folder findOne(String s, QueryParams queryParams) {
-        final FolderEntity entity = folderQueryRepository.findByFolderId(buildFolderIdFromStringIdentifier(s).getIdentifier());
+    public Folder findOne(String id, QueryParams queryParams) {
+        final FolderEntity entity = folderQueryRepository.findByFolderId(id);
         return buildFolderFromEntity(entity);
     }
 
@@ -41,18 +41,14 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
     }
 
     @Override
-    public Iterable<Folder> findAll(Iterable<String> strings, QueryParams queryParams) {
-        final List<String> ids = StreamSupport.stream(strings.spliterator(), false)
-            .map(this::buildFolderIdFromStringIdentifier)
-            .map(FolderId::getIdentifier)
-            .collect(Collectors.toList());
+    public Iterable<Folder> findAll(Iterable<String> ids, QueryParams queryParams) {
         final Iterable<FolderEntity> entities = folderQueryRepository.findAllByFolderId(ids);
         return buildFolderListFromEntities(entities);
     }
 
     @Override
-    public void delete(String s) {
-        final DeleteFolderCommand deleteFolderCommand = new DeleteFolderCommand(buildFolderIdFromStringIdentifier(s));
+    public void delete(String id) {
+        final DeleteFolderCommand deleteFolderCommand = new DeleteFolderCommand(FolderId.from(id));
         commandGateway.send(deleteFolderCommand);
     }
 
@@ -60,9 +56,9 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
     @Override
     public Folder save(Folder entity) {
         final CreateFolderCommand createFolderCommand = new CreateFolderCommand(
-            entity.getId() != null ? buildFolderIdFromStringIdentifier(entity.getId()) : new FolderId()
+            entity.getId() != null ? FolderId.from(entity.getId()) : new FolderId()
             , entity.getName()
-            , buildFolderIdFromStringIdentifier(entity.getParent().getId()));
+            , FolderId.from(entity.getParent().getId()));
         return commandGateway.sendAndWait(createFolderCommand);
     }
 
@@ -78,10 +74,9 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
             .id(entity.getFolderId())
             .created(entity.getCreated())
             .updated(entity.getUpdated())
-            .version(entity.getVersion())
             .properties(entity.getProperties());
-        if(entity.getParentId() != null) {
-            builder.parent(FolderRelationBuilder.builder().id(entity.getParentId()).build());
+        if(entity.getParent() != null) {
+            builder.parent(FolderRelationFactory.from(entity.getParent()));
         }
         return builder
             .children(children)
@@ -89,15 +84,12 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
     }
 
     private List<Folder> getChildren(FolderEntity entity) {
-        if(entity.getChildren() == null) {
+        //if(entity.getChildren() == null) {
             return Collections.emptyList();
-        }
+        /*}
         return entity.getChildren().stream()
-            .map(id -> FolderRelationBuilder.builder().id(FolderId.builder().identifier(id.getFolderId()).build()).build())
-            .collect(Collectors.toList());
-    }
-
-    private FolderId buildFolderIdFromStringIdentifier(String identifier) {
-        return FolderId.builder().identifier(identifier).build();
+            .filter(child -> child != null)
+            .map(FolderRelationFactory::from)
+            .collect(Collectors.toList()); */
     }
 }

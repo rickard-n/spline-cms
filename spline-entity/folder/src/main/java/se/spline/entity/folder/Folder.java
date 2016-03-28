@@ -42,19 +42,19 @@ public class Folder extends AbstractAnnotatedAggregateRoot<FolderId> {
 	protected void handle(DomainEventMessage eventMessage) {
 		if (eventMessage.getPayloadType().equals(FolderCreatedEvent.class)) {
 			FolderCreatedEvent event = (FolderCreatedEvent) eventMessage.getPayload();
-			this.id = event.getFolderIdentifier();
+			this.id = event.getId();
 		}
 	}
 
-	public void addParameters(List<FolderParameter<?>> parameters) {
+	void addParameters(List<FolderParameter<?>> parameters) {
 		apply(new ParametersAddedToFolderEvent(id, parameters));
 	}
 
-	public void delete() {
+	void delete() {
 		apply(new FolderDeletedEvent(id));
 	}
 
-	public void removeParameters(List<FolderParameter<?>> parameters) {
+	void removeParameters(List<FolderParameter<?>> parameters) {
 		apply(new ParametersRemovedFromFolderEvent(id, parameters));
 	}
 }

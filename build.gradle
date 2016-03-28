@@ -3,7 +3,7 @@ ext {
 	javaVersion = '1.8'
 	splineVersion = '0.1'
     springPlattformBomVersion = '2.0.3.RELEASE'
-    axonVersion = '2.4.3'
+    axonVersion = '2.4.4'
     springfoxVersion = '2.4.0'
     katharsisVersion = '2.3.1'
     reflectionsVersion = '0.9.10'

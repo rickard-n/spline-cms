@@ -3,6 +3,8 @@ package se.spline.api.repository;
 import io.katharsis.queryParams.QueryParams;
 import io.katharsis.repository.ResourceRepository;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -20,6 +22,7 @@ import java.util.stream.StreamSupport;
 
 @Component
 public class RepositoryResourceRepository implements ResourceRepository<Repository, String> {
+    private Logger logger = LoggerFactory.getLogger(RepositoryResourceRepository.class);
 
     @Autowired
     private CommandGateway commandGateway;
@@ -55,6 +58,7 @@ public class RepositoryResourceRepository implements ResourceRepository<Reposito
 
     @Override
     public Repository save(Repository entity) {
+        logger.debug("Save entity {}", entity);
         final RepositoryMetaData metaData = RepositoryMetaData.builder()
             .name(entity.getName())
             .description(entity.getDescription())

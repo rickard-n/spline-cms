@@ -32,7 +32,7 @@ public class RepositoryOperationListener {
         commandBus.dispatch(new GenericCommandMessage<>(createRootFolderCommand));
 
         final UpdateRepositoryWithRootFolderCommand updateRepositoryWithRootFolderCommand = new UpdateRepositoryWithRootFolderCommand(event.getId(), folderId);
-        commandBus.dispatch(new GenericCommandMessage<>(updateRepositoryWithRootFolderCommand));
+            commandBus.dispatch(new GenericCommandMessage<>(updateRepositoryWithRootFolderCommand));
     }
 
 

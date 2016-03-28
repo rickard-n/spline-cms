@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import se.spline.api.folder.event.FolderCreatedEvent;
 import se.spline.api.folder.event.FolderDeletedEvent;
 import se.spline.api.folder.event.ParametersAddedToFolderEvent;
-import se.spline.api.folder.event.RootFolderCreatedEvent;
 import se.spline.api.folder.parameter.FolderParameter;
 import se.spline.utils.MapMerger;
 
@@ -25,42 +24,23 @@ public class FolderListener {
 	private FolderQueryRepository folderRepository;
 
     @Autowired
-    public void FolderListener(FolderQueryRepository folderRepository) {
+    public FolderListener(FolderQueryRepository folderRepository) {
         this.folderRepository = folderRepository;
     }
 
     @EventHandler
-    public void handleFolderCreatedEvent(RootFolderCreatedEvent event, @Timestamp DateTime timeStamp) {
-        final FolderEntity.FolderEntityBuilder builder = FolderEntity.builder();
-        builder.folderId(event.getFolderId().getIdentifier())
-            .name(event.getRepository().getName())
-            .created(timeStamp.toDate())
-            .updated(timeStamp.toDate())
-            .version(timeStamp.getMillis());
-        final FolderEntity folderEntity = builder.build();
-        logger.debug("Save new root folder to repository {}", folderEntity);
-        folderRepository.save(folderEntity);
-    }
-
-	@EventHandler
     public void handleFolderCreatedEvent(FolderCreatedEvent event, @Timestamp DateTime timeStamp) {
-        final FolderEntity.FolderEntityBuilder builder = FolderEntity.builder();
-        builder.folderId(event.getFolderIdentifier().getIdentifier())
+        final FolderEntity parentId = event.getParentId() != null ? folderRepository.findByFolderId(event.getParentId().getIdentifier()) : null;
+        final FolderEntity folderEntity = FolderEntity.builder()
+            .folderId(event.getId().getIdentifier())
             .name(event.getName())
             .created(timeStamp.toDate())
             .updated(timeStamp.toDate())
-            .version(timeStamp.getMillis());
-        if(event.getParentId() != null) {
-            final FolderEntity parentId = folderRepository.findByFolderId(event.getParentId().getIdentifier());
-            parentId.add(folderRepository.findByFolderId(event.getFolderIdentifier().getIdentifier()));
-            logger.debug("Add child {} to folder {}", event.getFolderIdentifier(), parentId);
-            folderRepository.save(parentId);
-            builder.parentId(event.getParentId());
-		}
-        final FolderEntity folderEntity = builder.build();
+            .parent(parentId)
+            .build();
         logger.debug("Save new folder to repository {}", folderEntity);
-		folderRepository.save(folderEntity);
-	}
+        folderRepository.save(folderEntity);
+    }
 
 	@EventHandler
 	public void handleParametersAddedToFolderEvent(ParametersAddedToFolderEvent event) {

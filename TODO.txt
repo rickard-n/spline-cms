@@ -104,4 +104,6 @@ TODOS:
 
             System.out.println("*************** " + paths);
             */
+- TimestampCutoffReadonlyEventStore for time-events.
 
+- Names Spline, Grooves, Shaft

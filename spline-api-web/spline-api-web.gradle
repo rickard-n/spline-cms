@@ -1,3 +1,5 @@
+apply plugin: "groovy"
+
 dependencies {
 	compile project(':folder')
 	compile project(':document')
@@ -16,7 +18,8 @@ dependencies {
     compile group: 'io.katharsis', name: 'katharsis-spring'
     compile group: 'org.reflections', name: 'reflections'
 
-
+    testCompile group: 'org.codehaus.groovy', name: 'groovy-all'
+    testCompile group: 'org.spockframework', name: 'spock-core'
 }
 
 apply plugin: 'spring-boot'

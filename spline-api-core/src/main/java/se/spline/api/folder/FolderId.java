@@ -19,4 +19,8 @@ public class FolderId extends AbstractId {
     public FolderId(String identifier) {
         super(identifier);
     }
+
+    public static FolderId from(String identifier) {
+        return builder().identifier(identifier).build();
+    }
 }

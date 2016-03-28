@@ -3,6 +3,7 @@
 	<include resource="org/springframework/boot/logging/logback/base.xml"/>
 
 	<logger name="se.spline" level="DEBUG"/>
+	<logger name="org.springframework.data.neo4j" level="TRACE"/>
 	<logger name="org.axonframework" level="INFO"/>
 
 </configuration>

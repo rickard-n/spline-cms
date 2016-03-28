@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.spline.api.folder.FolderId;
 import se.spline.api.model.Folder;
-import se.spline.api.repository.builder.FolderRelationBuilder;
+import se.spline.api.repository.builder.FolderRelationFactory;
 import se.spline.query.neo4j.folder.FolderEntity;
 import se.spline.query.neo4j.folder.FolderQueryRepository;
 
 import java.util.Collections;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Component
 public class FolderToFolderRelationshipRepository implements RelationshipRepository<Folder, String, Folder, String> {
@@ -41,9 +42,11 @@ public class FolderToFolderRelationshipRepository implements RelationshipReposit
 
     @Override
     public Folder findOneTarget(String sourceId, String fieldName, QueryParams queryParams) {
+
+
         final FolderEntity folderEntity = folderQueryRepository.findByFolderId(FolderId.builder().identifier(sourceId).build().getIdentifier());
         if("parent".equals(fieldName)) {
-            return FolderRelationBuilder.builder().id(folderEntity.getParentId()).build();
+            return FolderRelationFactory.from(folderEntity.getParent());
         }
 
         return null;
@@ -51,10 +54,10 @@ public class FolderToFolderRelationshipRepository implements RelationshipReposit
 
     @Override
     public Iterable<Folder> findManyTargets(String sourceId, String fieldName, QueryParams queryParams) {
-        final FolderEntity folderEntity = folderQueryRepository.findByFolderId(FolderId.builder().identifier(sourceId).build().getIdentifier());
         if("children".equals(fieldName)) {
-            return folderEntity.getChildren().stream()
-                .map(id -> FolderRelationBuilder.builder().id(FolderId.builder().identifier(id.getFolderId()).build()).build())
+            final Iterable<FolderEntity> folderEntity = folderQueryRepository.findChildrenForFolderWithId(sourceId);
+            return StreamSupport.stream(folderEntity.spliterator(), false)
+                .map(FolderRelationFactory::from)
                 .collect(Collectors.toList());
         }
         return Collections.emptyList();
