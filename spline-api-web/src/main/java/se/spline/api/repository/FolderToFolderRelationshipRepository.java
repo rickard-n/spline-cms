@@ -11,8 +11,6 @@ import se.spline.query.neo4j.folder.FolderEntity;
 import se.spline.query.neo4j.folder.FolderQueryRepository;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Component
 public class FolderToFolderRelationshipRepository implements RelationshipRepository<Folder, String, Folder, String> {
@@ -55,10 +53,7 @@ public class FolderToFolderRelationshipRepository implements RelationshipReposit
     @Override
     public Iterable<Folder> findManyTargets(String sourceId, String fieldName, QueryParams queryParams) {
         if("children".equals(fieldName)) {
-            final Iterable<FolderEntity> folderEntity = folderQueryRepository.findChildrenForFolderWithId(sourceId);
-            return StreamSupport.stream(folderEntity.spliterator(), false)
-                .map(FolderRelationFactory::from)
-                .collect(Collectors.toList());
+            return FolderRelationFactory.from(folderQueryRepository.findChildrenForFolderWithId(sourceId));
         }
         return Collections.emptyList();
     }

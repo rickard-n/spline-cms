@@ -21,7 +21,8 @@ import java.util.stream.Stream;
 @Component
 public class FolderListener {
 	private final Logger logger = LoggerFactory.getLogger(FolderListener.class);
-	private FolderQueryRepository folderRepository;
+	@Autowired
+    private FolderQueryRepository folderRepository;
 
     @Autowired
     public FolderListener(FolderQueryRepository folderRepository) {

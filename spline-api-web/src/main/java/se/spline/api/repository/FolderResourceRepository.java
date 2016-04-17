@@ -1,22 +1,22 @@
 package se.spline.api.repository;
 
 import io.katharsis.queryParams.QueryParams;
+import io.katharsis.queryParams.params.FilterParams;
 import io.katharsis.repository.ResourceRepository;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.neo4j.ogm.cypher.Filters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Component;
 import se.spline.api.folder.FolderId;
 import se.spline.api.folder.command.CreateFolderCommand;
 import se.spline.api.folder.command.DeleteFolderCommand;
 import se.spline.api.model.Folder;
-import se.spline.api.repository.builder.FolderRelationFactory;
+import se.spline.api.repository.builder.FolderFactory;
 import se.spline.query.neo4j.folder.FolderEntity;
 import se.spline.query.neo4j.folder.FolderQueryRepository;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Component
 public class FolderResourceRepository implements ResourceRepository<Folder, String> {
@@ -27,23 +27,29 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
     @Autowired
     private FolderQueryRepository folderQueryRepository;
 
+    @Autowired
+    private Neo4jOperations template;
 
     @Override
     public Folder findOne(String id, QueryParams queryParams) {
-        final FolderEntity entity = folderQueryRepository.findByFolderId(id);
-        return buildFolderFromEntity(entity);
+        return FolderFactory.from(folderQueryRepository.findByFolderId(id));
     }
 
     @Override
     public Iterable<Folder> findAll(QueryParams queryParams) {
-        final Iterable<FolderEntity> entities = folderQueryRepository.findAll();
-        return buildFolderListFromEntities(entities);
+        final FilterParams filterParams = queryParams.getFilters().getParams().getOrDefault("folder", new FilterParams(Collections.emptyMap()));
+        final Filters filters = new Filters();
+        filterParams.getParams().entrySet()
+            .forEach(entry -> filters.add(entry.getKey(), entry.getValue().iterator().next()));
+        if(filters.isEmpty()) {
+            return FolderFactory.from(folderQueryRepository.findAll());
+        }
+        return FolderFactory.from(template.loadAllByProperties(FolderEntity.class, filters));
     }
 
     @Override
     public Iterable<Folder> findAll(Iterable<String> ids, QueryParams queryParams) {
-        final Iterable<FolderEntity> entities = folderQueryRepository.findAllByFolderId(ids);
-        return buildFolderListFromEntities(entities);
+        return FolderFactory.from(folderQueryRepository.findAllByFolderId(ids));
     }
 
     @Override
@@ -62,34 +68,4 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
         return commandGateway.sendAndWait(createFolderCommand);
     }
 
-    private List<Folder> buildFolderListFromEntities(Iterable<FolderEntity> entities) {
-        return StreamSupport.stream(entities.spliterator(), false)
-            .map(this::buildFolderFromEntity)
-            .collect(Collectors.toList());
-    }
-
-    private Folder buildFolderFromEntity(FolderEntity entity) {
-        final List<Folder> children = getChildren(entity);
-        final Folder.FolderBuilder builder = Folder.builder()
-            .id(entity.getFolderId())
-            .created(entity.getCreated())
-            .updated(entity.getUpdated())
-            .properties(entity.getProperties());
-        if(entity.getParent() != null) {
-            builder.parent(FolderRelationFactory.from(entity.getParent()));
-        }
-        return builder
-            .children(children)
-            .build();
-    }
-
-    private List<Folder> getChildren(FolderEntity entity) {
-        //if(entity.getChildren() == null) {
-            return Collections.emptyList();
-        /*}
-        return entity.getChildren().stream()
-            .filter(child -> child != null)
-            .map(FolderRelationFactory::from)
-            .collect(Collectors.toList()); */
-    }
 }

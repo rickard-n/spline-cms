@@ -3,8 +3,9 @@ package se.spline.api.repository.builder;
 import se.spline.api.model.Folder;
 import se.spline.query.neo4j.folder.FolderEntity;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class FolderFactory {
 
@@ -15,21 +16,17 @@ public class FolderFactory {
             .created(entity.getCreated())
             .updated(entity.getUpdated())
             .properties(entity.getProperties())
-            .children(getChildren(entity))
             .parent(getParent(entity)).build();
+    }
+
+    public static List<Folder> from(Iterable<FolderEntity> entities) {
+        return StreamSupport.stream(entities.spliterator(), false)
+            .map(FolderFactory::from)
+            .collect(Collectors.toList());
     }
 
     private static Folder getParent(FolderEntity entity) {
         return entity.getParent() != null ? FolderRelationFactory.from(entity.getParent()) : null;
     }
 
-    private static List<Folder> getChildren(FolderEntity entity) {
-        //if(entity.getChildren() == null) {
-            return Collections.emptyList();
-        /*}
-        return entity.getChildren().stream()
-            .filter(child -> child != null)
-            .map(FolderRelationFactory::from)
-            .collect(Collectors.toList());*/
-    }
 }

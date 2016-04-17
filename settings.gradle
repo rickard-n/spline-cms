@@ -2,13 +2,18 @@ def projects = [
 		[
 				directory : '',
 				prefix : '',
-				projects : ['spline-api-web', 'spline-api-core','spline-core', 'spline-query-neo4j']
+				projects : ['spline-api-web', 'spline-api-core','spline-core']
 		],
 		[
 				directory : 'spline-entity',
 				prefix : '',
 				projects : ['repository','folder','document','relationship','type']
-		]
+		],
+        [
+                directory: 'spline-query',
+                prefix: '',
+                projects:['query-core', 'query-neo4j']
+        ]
 ]
 
 projects.each {group ->

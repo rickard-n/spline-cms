@@ -39,7 +39,7 @@ public class RepositoryCommandHandlerTest {
     @Test
     public void shouldDeleteRepository() {
         final RepositoryId id = new RepositoryId();
-        fixture.given(new RepositoryCreatedEvent(id, RepositoryMetaData.builder().build()))
+        fixture.given(new RepositoryCreatedEvent(id, RepositoryMetaData.builder().name("ItemToDelete").build()))
             .when(new DeleteRepositoryCommand(id))
             .expectEvents(new RepositoryDeletedEvent(id));
     }
@@ -48,7 +48,7 @@ public class RepositoryCommandHandlerTest {
     public void shouldChangeRepositoryMetaData() {
         final RepositoryId id = new RepositoryId();
         final RepositoryMetaData metaData = RepositoryMetaData.builder().name("newName").description("newDiscription").build();
-        fixture.given(new RepositoryCreatedEvent(id, RepositoryMetaData.builder().build()))
+        fixture.given(new RepositoryCreatedEvent(id, RepositoryMetaData.builder().name("oldName").build()))
             .when(new UpdateMetaDataForRepositoryCommand(id, metaData))
             .expectEvents(new RepositoryMetaDataUpdatedEvent(id, metaData));
 

@@ -8,6 +8,7 @@ repositories {
 dependencies {
 	compile project(':spline-core')
 	compile project(':spline-api-core')
+	compile project(':query-core')
 	compile group: 'org.springframework.data', name: 'spring-data-neo4j'
 
     testCompile group: 'org.codehaus.groovy', name: 'groovy-all'

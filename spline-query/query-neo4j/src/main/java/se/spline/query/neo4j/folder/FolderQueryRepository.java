@@ -1,13 +1,14 @@
 package se.spline.query.neo4j.folder;
 
-import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
+import org.springframework.data.repository.NoRepositoryBean;
+import se.spline.query.KatharsisQueryRepository;
 
-public interface FolderQueryRepository extends GraphRepository<FolderEntity> {
+@NoRepositoryBean
+public interface FolderQueryRepository extends GraphRepository<FolderEntity>, KatharsisQueryRepository<FolderEntity> {
 
     FolderEntity findByFolderId(String folderId);
     Iterable<FolderEntity> findAllByFolderId(Iterable<String> folderId);
 
-    @Query("MATCH (:Folder {folderId:{0}})<-[:PUBLISHED_IN]-(c:Folder) return c")
     Iterable<FolderEntity> findChildrenForFolderWithId(String folderId);
 }
