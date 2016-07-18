@@ -13,7 +13,6 @@ import lombok.experimental.Builder;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Builder
@@ -36,6 +35,10 @@ public class Folder {
     @JsonApiToMany(lazy = false)
     @JsonApiLookupIncludeAutomatically
     private List<Folder> children;
-    private Map<String, String> properties;
+
+    @JsonApiToMany(lazy = false)
+    @JsonApiLookupIncludeAutomatically
+    private List<Property> properties;
+
 
 }

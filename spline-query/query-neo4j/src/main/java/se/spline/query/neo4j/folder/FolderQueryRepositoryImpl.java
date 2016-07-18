@@ -16,7 +16,7 @@ public class FolderQueryRepositoryImpl extends Neo4jKatharsisQueryRepository<Fol
 
     @Autowired
     public FolderQueryRepositoryImpl(Session session, Neo4jOperations template) {
-        super(FolderEntity.class, session);
+        super(FolderEntity.class, session, template);
         this.session = session;
         this.template = template;
     }

@@ -54,6 +54,8 @@ public class AxonConfiguration {
 		commandBus.setHandlerInterceptors(commandHandlerInterceptors);
 		return commandBus;
 	}
+
+
 	/*
 	@Bean
 	AnnotationCommandHandlerBeanPostProcessor annotationCommandHandlerBeanPostProcessor() {

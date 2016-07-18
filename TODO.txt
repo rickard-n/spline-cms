@@ -31,6 +31,21 @@ curl -i -H "Accept: application/vnd.api+json" \
   }' \
   http://localhost:8081/folder
 
+curl -i -H "Accept: application/vnd.api+json" \
+ -H "Content-Type: application/vnd.api+json" \
+  -X POST -d '{
+        "data": {
+            "type": "document",
+            "attributes": {
+                "name": "document"
+            },
+            "relationships": {
+
+            }
+        }
+  }' \
+  http://localhost:8081/document
+
 - Consul-spring boot config. (Spring-boot-cloud)
 
 - Type (id (default), name*, namespace, queryName, parent*)

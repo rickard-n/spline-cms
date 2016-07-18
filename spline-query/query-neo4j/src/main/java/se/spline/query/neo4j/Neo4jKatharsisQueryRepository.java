@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.neo4j.repository.GraphRepositoryImpl;
 import org.springframework.data.neo4j.template.Neo4jOgmExceptionTranslator;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import se.spline.query.KatharsisQueryRepository;
 import se.spline.query.filter.Filters;
 
@@ -21,8 +22,8 @@ public abstract class Neo4jKatharsisQueryRepository<T> extends GraphRepositoryIm
 
     private final Session session;
 
-    public Neo4jKatharsisQueryRepository(Class<T> clazz, Session session) {
-        super(clazz, session);
+    public Neo4jKatharsisQueryRepository(Class<T> clazz, Session session, Neo4jOperations operations) {
+        super(clazz, operations);
         this.session = session;
         this.clazz = clazz;
     }

@@ -14,7 +14,7 @@ public class RepositoryQueryRepositoryImpl extends Neo4jKatharsisQueryRepository
 
     @Autowired
     public RepositoryQueryRepositoryImpl(Session session, Neo4jOperations template) {
-        super(RepositoryEntity.class, session);
+        super(RepositoryEntity.class, session, template);
         this.session = session;
         this.template = template;
     }

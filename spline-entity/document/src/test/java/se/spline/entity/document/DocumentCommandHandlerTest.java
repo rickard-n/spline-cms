@@ -4,7 +4,7 @@ import org.axonframework.test.FixtureConfiguration;
 import org.axonframework.test.Fixtures;
 import org.junit.Before;
 import org.junit.Test;
-import se.spline.api.document.CreateDocumentCommand;
+import se.spline.api.document.command.CreateDocumentCommand;
 import se.spline.api.document.DocumentCreatedEvent;
 import se.spline.api.document.DocumentId;
 

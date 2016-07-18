@@ -15,7 +15,7 @@ public class FolderFactory {
             .name(entity.getName())
             .created(entity.getCreated())
             .updated(entity.getUpdated())
-            .properties(entity.getProperties())
+            //.properties(entity.getProperties())
             .parent(getParent(entity)).build();
     }
 

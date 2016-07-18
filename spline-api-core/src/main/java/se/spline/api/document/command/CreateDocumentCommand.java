@@ -1,4 +1,6 @@
-package se.spline.api.document;
+package se.spline.api.document.command;
+
+import se.spline.api.document.DocumentId;
 
 public class CreateDocumentCommand extends DocumentCommand {
 	private final String name;

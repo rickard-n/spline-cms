@@ -61,8 +61,21 @@ public class FolderResourceRepository implements ResourceRepository<Folder, Stri
     @SuppressWarnings("unchecked")
     @Override
     public Folder save(Folder entity) {
+        if(entity.getId() == null) {
+            return sendCreateFolderCommand(entity);
+        } else {
+            return sendUpdateFolderCommand(entity);
+        }
+
+    }
+
+    private Folder sendUpdateFolderCommand(Folder entity) {
+        return null;
+    }
+
+    private Folder sendCreateFolderCommand(Folder entity) {
         final CreateFolderCommand createFolderCommand = new CreateFolderCommand(
-            entity.getId() != null ? FolderId.from(entity.getId()) : new FolderId()
+            new FolderId()
             , entity.getName()
             , FolderId.from(entity.getParent().getId()));
         return commandGateway.sendAndWait(createFolderCommand);
