@@ -4,4 +4,5 @@ dependencies {
 	testCompile group: 'org.axonframework', name: 'axon-test'
 	testCompile group: 'org.mockito', name: 'mockito-core'
 	testCompile group: 'junit', name: 'junit'
+	testRuntime group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el'
 }

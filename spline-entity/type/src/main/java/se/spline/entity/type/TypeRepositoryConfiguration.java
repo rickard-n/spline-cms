@@ -1,9 +1,8 @@
-package se.spline.entity.document;
+package se.spline.entity.type;
 
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.annotation.AggregateAnnotationCommandHandler;
 import org.axonframework.commandhandling.annotation.AnnotationCommandTargetResolver;
-import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventsourcing.EventSourcingRepository;
 import org.axonframework.eventstore.EventStore;
@@ -13,19 +12,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class DocumentRepositoryConfiguration {
+public class TypeRepositoryConfiguration {
 
 	@Bean
 	@Autowired
-	EventSourcingRepository<Document> documentRepository(EventStore eventStore, EventBus eventBus) {
-        final EventSourcingRepository<Document> repository = new EventSourcingRepository<>(Document.class, eventStore);
+	EventSourcingRepository<Type> typeRepository(EventStore eventStore, EventBus eventBus) {
+        final EventSourcingRepository<Type> repository = new EventSourcingRepository<>(Type.class, eventStore);
         repository.setEventBus(eventBus);
         return repository;
 	}
 
 	@Bean
     @Autowired
-    AggregateAnnotationCommandHandler documentAggregateAnnotationCommandHandler(CommandBus commandBus, Repository<Document> repository) {
-        return AggregateAnnotationCommandHandler.subscribe(Document.class, repository, commandBus, new AnnotationCommandTargetResolver());
+    AggregateAnnotationCommandHandler typeAggregateAnnotationCommandHandler(CommandBus commandBus, Repository<Type> repository) {
+        return AggregateAnnotationCommandHandler.subscribe(Type.class, repository, commandBus, new AnnotationCommandTargetResolver());
     }
 }

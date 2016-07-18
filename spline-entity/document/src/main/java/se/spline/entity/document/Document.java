@@ -27,7 +27,7 @@ public class Document extends AbstractAnnotatedAggregateRoot<DocumentId> {
 	public Document(CreateDocumentCommand command) {
         logger.debug("Command: 'CreateDocumentCommand' received.");
         logger.debug("Queuing up a new DocumentCreatedEvent for document '{}'", command.getDocumentId());
-
+        this.identifier = command.getDocumentId();
         apply(new DocumentCreatedEvent(command.getDocumentId(), command.getName()));
     }
 

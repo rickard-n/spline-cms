@@ -8,7 +8,7 @@ curl -i -H "Accept: application/vnd.api+json" \
             }
         }
         }' \
-  http://localhost:8081/repository
+  http://localhost:8081/api/repository
 
 
 curl -i -H "Accept: application/vnd.api+json" \
@@ -29,7 +29,7 @@ curl -i -H "Accept: application/vnd.api+json" \
             }
         }
   }' \
-  http://localhost:8081/folder
+  http://localhost:8081/api/folder
 
 curl -i -H "Accept: application/vnd.api+json" \
  -H "Content-Type: application/vnd.api+json" \
@@ -44,7 +44,23 @@ curl -i -H "Accept: application/vnd.api+json" \
             }
         }
   }' \
-  http://localhost:8081/document
+  http://localhost:8081/api/document
+
+curl -i -H "Accept: application/vnd.api+json" \
+ -H "Content-Type: application/vnd.api+json" \
+  -X POST -d '{
+        "data": {
+            "type": "type",
+            "attributes": {
+                "name": "document_type",
+                "baseType": "DOCUMENT"
+            },
+            "relationships": {
+
+            }
+        }
+  }' \
+  http://localhost:8081/api/type
 
 - Consul-spring boot config. (Spring-boot-cloud)
 
