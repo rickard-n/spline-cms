@@ -1,4 +1,4 @@
-package se.spline.entity.repository;
+package se.spline.api.repository.entity;
 
 import lombok.Getter;
 import org.axonframework.eventhandling.annotation.EventHandler;

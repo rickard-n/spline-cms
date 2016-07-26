@@ -1,4 +1,4 @@
-package se.spline.entity.repository;
+package se.spline.api.repository.entity;
 
 import org.axonframework.test.FixtureConfiguration;
 import org.axonframework.test.Fixtures;

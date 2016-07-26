@@ -1,4 +1,4 @@
-package se.spline.entity.repository;
+package se.spline.api.repository.entity;
 
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventsourcing.EventSourcingRepository;
