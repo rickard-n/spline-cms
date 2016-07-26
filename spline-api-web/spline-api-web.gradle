@@ -1,7 +1,6 @@
 apply plugin: "groovy"
 
 dependencies {
-	compile project(':relationship')
 	compile project(':repository')
 	compile project(':type')
 	compile project(':spline-api-core')

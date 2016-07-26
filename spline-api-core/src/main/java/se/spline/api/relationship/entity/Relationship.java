@@ -1,4 +1,4 @@
-package se.spline.entity;
+package se.spline.api.relationship.entity;
 
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 
