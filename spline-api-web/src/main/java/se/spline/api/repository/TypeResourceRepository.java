@@ -12,8 +12,10 @@ import se.spline.api.repository.builder.TypeFactory;
 import se.spline.api.type.TypeId;
 import se.spline.api.type.command.CreateTypeCommand;
 import se.spline.api.type.property.Cardinality;
-import se.spline.api.type.property.PropertyChoiceTypeImpl;
-import se.spline.api.type.property.StringPropertyChoiceType;
+import se.spline.api.type.property.PropertyType;
+import se.spline.api.type.property.PropertyTypeChoiceImpl;
+import se.spline.api.type.property.StringPropertyType;
+import se.spline.api.type.property.StringPropertyTypeChoice;
 import se.spline.api.type.property.Updatability;
 import se.spline.query.neo4j.type.TypeQueryRepository;
 
@@ -54,8 +56,8 @@ public class TypeResourceRepository implements ResourceRepository<Type, String> 
     @Override
     public  Type save(Type entity) {
         final CreateTypeCommand.CreateTypeCommandBuilder commandBuilder = CreateTypeCommand.builder().id(new TypeId()).name(entity.getName()).baseType(entity.getBaseType());
-        final List<se.spline.api.type.property.TypeProperty> properties = entity.getProperties().stream()
-            .map(typeProperty -> se.spline.api.type.property.StringProperty.builder()
+        final List<PropertyType> properties = entity.getProperties().stream()
+            .map(typeProperty -> StringPropertyType.builder()
                 .name(typeProperty.getName())
                 .description(typeProperty.getDescription())
                 .displayName(typeProperty.getDisplayName())
@@ -72,8 +74,8 @@ public class TypeResourceRepository implements ResourceRepository<Type, String> 
         return findOne(((TypeId)commandGateway.sendAndWait(commandBuilder.build())).getIdentifier(), null);
     }
 
-    private PropertyChoiceTypeImpl<String> buildStringChoice(PropertyChoiceType choice) {
-        return StringPropertyChoiceType.builder()
+    private PropertyTypeChoiceImpl<String> buildStringChoice(PropertyChoiceType choice) {
+        return StringPropertyTypeChoice.builder()
             .displayName(choice.getDisplayName())
             .choice(choice.getChoice().stream().map(this::buildStringChoice).collect(Collectors.toList()))
             .value(choice.getValue().stream().map(String::valueOf).collect(Collectors.toList()))

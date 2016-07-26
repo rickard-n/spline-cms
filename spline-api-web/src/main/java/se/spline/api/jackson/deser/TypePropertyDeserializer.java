@@ -8,11 +8,11 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import se.spline.api.type.property.TypeProperty;
+import se.spline.api.type.property.PropertyType;
 
 import java.io.IOException;
 
-public class TypePropertyDeserializer extends JsonDeserializer<TypeProperty> implements ContextualDeserializer {
+public class TypePropertyDeserializer extends JsonDeserializer<PropertyType> implements ContextualDeserializer {
     private final ObjectMapper objectMapper;
 
     public TypePropertyDeserializer(ObjectMapper objectMapper) {
@@ -20,7 +20,7 @@ public class TypePropertyDeserializer extends JsonDeserializer<TypeProperty> imp
     }
 
     @Override
-    public TypeProperty deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public PropertyType deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         return null;
     }
 

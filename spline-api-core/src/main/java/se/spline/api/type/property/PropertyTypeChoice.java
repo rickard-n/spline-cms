@@ -2,10 +2,10 @@ package se.spline.api.type.property;
 
 import java.util.List;
 
-public interface PropertyChoiceType<T> {
+public interface PropertyTypeChoice<T> {
     String getDisplayName();
 
     List<T> getValue();
 
-    List<PropertyChoiceType<T>> getChoice();
+    List<PropertyTypeChoice<T>> getChoice();
 }

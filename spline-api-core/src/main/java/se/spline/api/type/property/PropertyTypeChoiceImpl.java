@@ -8,10 +8,10 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public abstract class PropertyChoiceTypeImpl<T> implements PropertyChoiceType<T> {
-    private String displayName;
+public abstract class PropertyTypeChoiceImpl<T> implements PropertyTypeChoice<T> {
+    private final String displayName;
     @Singular("value")
-    private List<T> value;
+    private final List<T> value;
     @Singular("choice")
-    private List<PropertyChoiceType<T>> choice;
+    private final List<PropertyTypeChoice<T>> choice;
 }

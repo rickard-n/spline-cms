@@ -8,9 +8,9 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class StringPropertyChoiceType extends PropertyChoiceTypeImpl<String> {
+public class StringPropertyTypeChoice extends PropertyTypeChoiceImpl<String> {
     @Builder
-    public StringPropertyChoiceType(String displayName, List<String> value, List<PropertyChoiceType<String>> choice) {
+    public StringPropertyTypeChoice(String displayName, List<String> value, List<PropertyTypeChoice<String>> choice) {
         super(displayName, value, choice);
     }
 }

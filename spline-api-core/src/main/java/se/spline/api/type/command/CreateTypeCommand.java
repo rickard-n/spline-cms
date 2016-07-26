@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import se.spline.api.type.BaseType;
 import se.spline.api.type.TypeId;
-import se.spline.api.type.property.TypeProperty;
+import se.spline.api.type.property.PropertyType;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -26,5 +26,5 @@ public class CreateTypeCommand {
 
     @NotEmpty
     @Singular
-    private List<TypeProperty> properties;
+    private List<PropertyType> properties;
 }
