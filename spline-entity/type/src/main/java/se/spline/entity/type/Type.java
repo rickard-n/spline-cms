@@ -8,6 +8,9 @@ import se.spline.api.type.BaseType;
 import se.spline.api.type.TypeId;
 import se.spline.api.type.command.CreateTypeCommand;
 import se.spline.api.type.event.TypeCreatedEvent;
+import se.spline.api.type.property.TypeProperty;
+
+import java.util.List;
 
 public class Type extends AbstractAnnotatedAggregateRoot<TypeId> {
 
@@ -22,7 +25,7 @@ public class Type extends AbstractAnnotatedAggregateRoot<TypeId> {
     private TypeId parent;
 
     private boolean creatable;
-
+    private List<TypeProperty> properties;
 
 
     @SuppressWarnings("UnusedDeclaration")
@@ -32,7 +35,7 @@ public class Type extends AbstractAnnotatedAggregateRoot<TypeId> {
 	@CommandHandler
 	public Type(CreateTypeCommand command) {
 	    this.id = command.getId();
-		apply(new TypeCreatedEvent(command.getId(), command.getName(), command.getBaseType()));
+		apply(new TypeCreatedEvent(command.getId(), command.getName(), command.getBaseType(), command.getProperties()));
 	}
 
     @Override
@@ -45,5 +48,6 @@ public class Type extends AbstractAnnotatedAggregateRoot<TypeId> {
 		this.id = event.getTypeId();
         this.name = event.getName();
         this.baseType = event.getBaseType();
-	}
+        this.properties = event.getProperties();
+    }
 }

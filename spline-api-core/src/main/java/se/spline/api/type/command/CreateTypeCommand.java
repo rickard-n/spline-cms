@@ -1,12 +1,21 @@
 package se.spline.api.type.command;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Singular;
+import lombok.Builder;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import se.spline.api.type.BaseType;
 import se.spline.api.type.TypeId;
+import se.spline.api.type.property.TypeProperty;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
-
+@Builder
+@AllArgsConstructor
+@Getter
 public class CreateTypeCommand {
     @NotNull(message = "id is null.")
     private final TypeId id;
@@ -15,21 +24,7 @@ public class CreateTypeCommand {
     @NotNull(message = "baseType is null.")
     private final BaseType baseType;
 
-    public CreateTypeCommand(TypeId id, String name, BaseType baseType) {
-        this.id = id;
-        this.name = name;
-        this.baseType = baseType;
-    }
-
-    public TypeId getId() {
-        return id;
-    }
-
-    public String getName() {
-		return name;
-	}
-
-    public BaseType getBaseType() {
-        return baseType;
-    }
+    @NotEmpty
+    @Singular
+    private List<TypeProperty> properties;
 }

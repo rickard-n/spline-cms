@@ -53,7 +53,40 @@ curl -i -H "Accept: application/vnd.api+json" \
             "type": "type",
             "attributes": {
                 "name": "document_type",
-                "baseType": "DOCUMENT"
+                "baseType": "DOCUMENT",
+                "properties": [
+                {
+                    "name": "title",
+                    "queryName": "title",
+                    "displayName": "Titel",
+                    "description": "Typ av rubrik. (Storlek)",
+                    "propertyType": "STRING",
+                    "cardinality": "SINGLE",
+                    "choice": [
+                    {
+                    "displayName": "Rubrik",
+                    "value": [
+                    "H3"
+                    ],
+                    "choice": [ ]
+                    }
+                    ,
+                    {
+                    "displayName": "Underrubrik",
+                    "value": [
+                    "H4"
+                    ],
+                    "choice": [ ]
+                    }
+                    ],
+                    "defaultValue": [
+                    "H1"
+                    ],
+                    "updatability": "ONCREATE",
+                    "inherited": false,
+                    "required": false,
+                    "openChoice": false
+                }]
             },
             "relationships": {
 
@@ -61,6 +94,11 @@ curl -i -H "Accept: application/vnd.api+json" \
         }
   }' \
   http://localhost:8081/api/type
+
+
+- Remove all neo4j-entities from api-web. Make query-neo4j a runtime-dependency. Use web-model for all repositories etc.
+    - Add another query-impl, to change from/to
+
 
 - Consul-spring boot config. (Spring-boot-cloud)
 

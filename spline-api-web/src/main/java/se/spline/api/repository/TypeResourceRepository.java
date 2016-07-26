@@ -7,10 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Component;
 import se.spline.api.model.Type;
+import se.spline.api.model.fragment.PropertyChoiceType;
 import se.spline.api.repository.builder.TypeFactory;
 import se.spline.api.type.TypeId;
 import se.spline.api.type.command.CreateTypeCommand;
+import se.spline.api.type.property.Cardinality;
+import se.spline.api.type.property.PropertyChoiceTypeImpl;
+import se.spline.api.type.property.StringPropertyChoiceType;
+import se.spline.api.type.property.Updatability;
 import se.spline.query.neo4j.type.TypeQueryRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class TypeResourceRepository implements ResourceRepository<Type, String> {
@@ -45,6 +53,30 @@ public class TypeResourceRepository implements ResourceRepository<Type, String> 
 
     @Override
     public  Type save(Type entity) {
-        return findOne(((TypeId)commandGateway.sendAndWait(new CreateTypeCommand(new TypeId(), entity.getName(), entity.getBaseType()))).getIdentifier(), null);
+        final CreateTypeCommand.CreateTypeCommandBuilder commandBuilder = CreateTypeCommand.builder().id(new TypeId()).name(entity.getName()).baseType(entity.getBaseType());
+        final List<se.spline.api.type.property.TypeProperty> properties = entity.getProperties().stream()
+            .map(typeProperty -> se.spline.api.type.property.StringProperty.builder()
+                .name(typeProperty.getName())
+                .description(typeProperty.getDescription())
+                .displayName(typeProperty.getDisplayName())
+                .updatability(Updatability.fromValue(typeProperty.getUpdatability()))
+                .openChoice(typeProperty.isOpenChoice())
+                .defaultValue(typeProperty.getDefaultValue().stream().map(object -> (String) object).collect(Collectors.toList()))
+                .inherited(typeProperty.isInherited())
+                .queryName(typeProperty.getQueryName())
+                .choice(typeProperty.getChoice().stream().map(this::buildStringChoice).collect(Collectors.toList()))
+                .cardinality(Cardinality.fromValue(typeProperty.getCardinality()))
+                .build())
+            .collect(Collectors.toList());
+        commandBuilder.properties(properties);
+        return findOne(((TypeId)commandGateway.sendAndWait(commandBuilder.build())).getIdentifier(), null);
+    }
+
+    private PropertyChoiceTypeImpl<String> buildStringChoice(PropertyChoiceType choice) {
+        return StringPropertyChoiceType.builder()
+            .displayName(choice.getDisplayName())
+            .choice(choice.getChoice().stream().map(this::buildStringChoice).collect(Collectors.toList()))
+            .value(choice.getValue().stream().map(String::valueOf).collect(Collectors.toList()))
+            .build();
     }
 }

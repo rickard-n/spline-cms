@@ -8,6 +8,7 @@ ext {
     katharsisVersion = '2.4.1'
     reflectionsVersion = '0.9.10'
     springNeo4jVersion = '4.1.2.RELEASE'
+    lombokVersion = '1.16.10'
 }
 
 buildscript {
@@ -68,6 +69,7 @@ configure(subprojects) {
                 entry 'springfox-swagger2'
                 entry 'springfox-swagger-ui'
             }
+            dependency group: 'org.projectlombok', name: 'lombok', version: lombokVersion
             dependency group: 'io.katharsis', name: 'katharsis-spring', version: katharsisVersion
             dependency group: 'org.reflections', name: 'reflections', version: reflectionsVersion
             dependency group: 'org.springframework.data', name: 'spring-data-neo4j', version: springNeo4jVersion

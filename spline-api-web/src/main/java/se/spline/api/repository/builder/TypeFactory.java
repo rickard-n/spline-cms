@@ -1,7 +1,9 @@
 package se.spline.api.repository.builder;
 
 import se.spline.api.model.Type;
+import se.spline.api.model.fragment.TypeProperty;
 import se.spline.query.neo4j.type.TypeEntity;
+import se.spline.query.neo4j.type.TypePropertyEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +16,17 @@ public class TypeFactory {
             .id(entity.getTypeId())
             .name(entity.getName())
             .baseType(entity.getBaseType())
+            .properties(entity.getProperties().stream()
+                .map(TypeFactory::from)
+                .collect(Collectors.toList()))
+            .build();
+    }
+
+    private static TypeProperty from(TypePropertyEntity propertyType) {
+        return TypeProperty.builder()
+            //.name(propertyType.getName())
+            //.displayName(propertyType.getDisplayName())
+            //.propertyType(propertyType.getPropertyType().toString())
             .build();
     }
 

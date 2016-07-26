@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.spline.api.type.event.TypeCreatedEvent;
 
+import java.util.Collections;
+
 @Component
 public class TypeListener {
     private final TypeQueryRepository repository;
@@ -20,6 +22,7 @@ public class TypeListener {
             .typeId(event.getTypeId().getIdentifier())
             .name(event.getName())
             .baseType(event.getBaseType())
+            .properties(Collections.singletonList(TypePropertyEntity.builder().build()))
             .build());
     }
 }

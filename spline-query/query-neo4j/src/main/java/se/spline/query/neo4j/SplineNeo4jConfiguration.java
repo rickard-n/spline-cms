@@ -29,7 +29,7 @@ public class SplineNeo4jConfiguration extends Neo4jConfiguration {
             //.setDriverClassName("org.neo4j.ogm.drivers.http.driver.HttpDriver")
             //.setConnectionPoolSize(2)
             .setCredentials(username, password)
-            .setURI("http://" + host); // TODO: FIX THIS PASSWORD THING
+            .setURI("http://" + host);
         return config;
     }
 

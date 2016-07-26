@@ -27,9 +27,9 @@ public class TypeTest {
 	@Test
 	public void shouldCreateEvent() throws Exception {
 		fixture.given()
-				.when(new CreateTypeCommand(TypeId.from("1"), "type", BaseType.DOCUMENT))
+				.when(CreateTypeCommand.builder().id(TypeId.from("1")).name("type").baseType(BaseType.DOCUMENT).build())
                 .expectReturnValue(TypeId.from("1"))
-				.expectEvents(new TypeCreatedEvent(TypeId.from("1"), "type", BaseType.DOCUMENT));
+				.expectEvents(new TypeCreatedEvent(TypeId.from("1"), "type", BaseType.DOCUMENT, command.getProperties()));
 	}
 
     @Test(expected = JSR303ViolationException.class)
@@ -37,7 +37,7 @@ public class TypeTest {
         final SimpleCommandBus commandBus = (SimpleCommandBus) fixture.getCommandBus();
         commandBus.setDispatchInterceptors(Collections.singletonList(new BeanValidationInterceptor()));
         fixture.given()
-            .when(new CreateTypeCommand(TypeId.from("1"), "", null));
+            .when(CreateTypeCommand.builder().build());
 
     }
 }
