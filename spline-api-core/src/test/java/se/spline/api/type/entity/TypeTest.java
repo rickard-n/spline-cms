@@ -1,8 +1,7 @@
-package se.svt.spline.entity.type;
+package se.spline.api.type.entity;
 
 import org.axonframework.commandhandling.SimpleCommandBus;
 import org.axonframework.commandhandling.interceptors.BeanValidationInterceptor;
-import org.axonframework.commandhandling.interceptors.JSR303ViolationException;
 import org.axonframework.test.FixtureConfiguration;
 import org.axonframework.test.Fixtures;
 import org.junit.Before;
@@ -11,8 +10,8 @@ import se.spline.api.type.BaseType;
 import se.spline.api.type.TypeId;
 import se.spline.api.type.command.CreateTypeCommand;
 import se.spline.api.type.event.TypeCreatedEvent;
-import se.spline.entity.type.Type;
 
+import javax.validation.ValidationException;
 import java.util.Collections;
 
 public class TypeTest {
@@ -27,12 +26,12 @@ public class TypeTest {
 	@Test
 	public void shouldCreateEvent() throws Exception {
 		fixture.given()
-				.when(CreateTypeCommand.builder().id(TypeId.from("1")).name("type").baseType(BaseType.DOCUMENT).build())
+				.when(CreateTypeCommand.builder().id(TypeId.from("1")).name("type").baseType(BaseType.DOCUMENT).properties(Collections.emptyList()).build())
                 .expectReturnValue(TypeId.from("1"))
-				.expectEvents(new TypeCreatedEvent(TypeId.from("1"), "type", BaseType.DOCUMENT, command.getProperties()));
+				.expectEvents(new TypeCreatedEvent(TypeId.from("1"), "type", BaseType.DOCUMENT, Collections.emptyList()));
 	}
 
-    @Test(expected = JSR303ViolationException.class)
+    @Test(expected = ValidationException.class)
     public void shouldValidateCommand() {
         final SimpleCommandBus commandBus = (SimpleCommandBus) fixture.getCommandBus();
         commandBus.setDispatchInterceptors(Collections.singletonList(new BeanValidationInterceptor()));

@@ -5,11 +5,6 @@ def projects = [
 				projects : ['spline-api-web', 'spline-api-core','spline-core']
 		],
 		[
-				directory : 'spline-entity',
-				prefix : '',
-				projects : ['type']
-		],
-        [
                 directory: 'spline-query',
                 prefix: '',
                 projects:['query-core', 'query-neo4j']
