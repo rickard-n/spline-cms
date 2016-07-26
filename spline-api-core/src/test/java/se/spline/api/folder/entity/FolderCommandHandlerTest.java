@@ -1,4 +1,4 @@
-package se.spline.folder;
+package se.spline.api.folder.entity;
 
 import org.axonframework.test.FixtureConfiguration;
 import org.axonframework.test.Fixtures;
@@ -15,8 +15,6 @@ import se.spline.api.folder.event.ParametersAddedToFolderEvent;
 import se.spline.api.folder.event.ParametersRemovedFromFolderEvent;
 import se.spline.api.folder.parameter.FolderParameter;
 import se.spline.api.folder.parameter.StringFolderParameter;
-import se.spline.entity.folder.Folder;
-import se.spline.entity.folder.FolderCommandHandler;
 
 import java.util.ArrayList;
 import java.util.List;
