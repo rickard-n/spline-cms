@@ -176,3 +176,9 @@ TODOS:
 - TimestampCutoffReadonlyEventStore for time-events.
 
 - Names Spline, Grooves, Shaft
+
+Refactoring:
+- Add spring-boot-spline-autoconfiguration
+- Spline-api-web -> All model should be named Resource and Fragment
+- Query-core should have domain-objects, to map from a repository to web-implementation.
+
