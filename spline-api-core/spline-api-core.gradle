@@ -1,10 +1,12 @@
 dependencies {
-	compile group: 'org.springframework', name: 'spring-context'
 	compile group: 'org.axonframework', name: 'axon-core'
-	compile group: 'org.axonframework', name: 'axon-mongo'
-    compile group: 'org.projectlombok', name: 'lombok'
+    compile group: 'org.axonframework', name: 'axon-mongo'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager'
     compile group: 'org.hibernate', name: 'hibernate-validator'
+    compile group: 'org.projectlombok', name: 'lombok'
+    compile group: 'org.springframework', name: 'spring-context'
 
+    testCompile group: 'org.axonframework', name: 'axon-test'
     testCompile group: 'org.mockito', name: 'mockito-core'
     testCompile group: 'junit', name: 'junit'
 }

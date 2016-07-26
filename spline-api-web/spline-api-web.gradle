@@ -2,7 +2,6 @@ apply plugin: "groovy"
 
 dependencies {
 	compile project(':folder')
-	compile project(':document')
 	compile project(':relationship')
 	compile project(':repository')
 	compile project(':type')

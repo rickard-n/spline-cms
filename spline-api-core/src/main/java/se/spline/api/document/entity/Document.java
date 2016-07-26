@@ -1,4 +1,4 @@
-package se.spline.entity.document;
+package se.spline.api.document.entity;
 
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
