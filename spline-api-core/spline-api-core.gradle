@@ -6,6 +6,7 @@ dependencies {
     compile group: 'org.projectlombok', name: 'lombok'
     compile group: 'org.springframework', name: 'spring-context'
 
+    testRuntime group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el'
     testCompile group: 'org.axonframework', name: 'axon-test'
     testCompile group: 'org.mockito', name: 'mockito-core'
     testCompile group: 'junit', name: 'junit'

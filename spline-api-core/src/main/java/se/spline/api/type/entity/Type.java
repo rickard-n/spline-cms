@@ -25,6 +25,7 @@ public class Type extends AbstractAnnotatedAggregateRoot<TypeId> {
     private TypeId parent;
 
     private boolean creatable;
+    private boolean fulltextIndexed;
     private List<PropertyType> properties;
 
 
@@ -35,7 +36,16 @@ public class Type extends AbstractAnnotatedAggregateRoot<TypeId> {
 	@CommandHandler
 	public Type(CreateTypeCommand command) {
 	    this.id = command.getId();
-		apply(new TypeCreatedEvent(command.getId(), command.getName(), command.getBaseType(), command.getProperties()));
+		apply(new TypeCreatedEvent(
+		    command.getId(),
+            command.getName(),
+            command.getDisplayName(),
+            command.getDescription(),
+            command.getBaseType(),
+            command.getParent(),
+            command.isCreatable(),
+            command.isFulltextIndexed(),
+            command.getProperties()));
 	}
 
     @Override
@@ -47,7 +57,12 @@ public class Type extends AbstractAnnotatedAggregateRoot<TypeId> {
 	public void on(TypeCreatedEvent event) {
 		this.id = event.getTypeId();
         this.name = event.getName();
+        this.displayName = event.getDisplayName();
+        this.description = event.getDescription();
         this.baseType = event.getBaseType();
+        this.parent = event.getTypeId();
+        this.creatable = event.isCreatable();
+        this.fulltextIndexed = event.isFulltextIndexed();
         this.properties = event.getProperties();
     }
 }
