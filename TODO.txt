@@ -182,3 +182,4 @@ Refactoring:
 - Spline-api-web -> All model should be named Resource and Fragment
 - Query-core should have domain-objects, to map from a repository to web-implementation.
 
+- compileOnly for lombok, with intellij??
