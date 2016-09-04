@@ -2,7 +2,7 @@ package se.spline.api.repository;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.experimental.Builder;
+import lombok.Builder;
 import se.spline.api.AbstractId;
 
 @EqualsAndHashCode(callSuper = true)

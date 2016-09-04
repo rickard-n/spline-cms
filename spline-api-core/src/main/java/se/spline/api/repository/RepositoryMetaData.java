@@ -2,7 +2,7 @@ package se.spline.api.repository;
 
 import lombok.Data;
 import lombok.NonNull;
-import lombok.experimental.Builder;
+import lombok.Builder;
 
 @Builder
 @Data

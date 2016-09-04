@@ -5,14 +5,12 @@ import se.spline.api.folder.FolderId;
 import se.spline.api.repository.RepositoryId;
 
 @Getter
-public class UpdateRepositoryWithRootFolderCommand {
+public class UpdateRepositoryWithRootFolderCommand extends RepositoryCommand {
 
-    private final RepositoryId repositoryId;
     private final FolderId folderId;
 
     public UpdateRepositoryWithRootFolderCommand(RepositoryId repositoryId, FolderId folderId) {
-
-        this.repositoryId = repositoryId;
+        super(repositoryId);
         this.folderId = folderId;
     }
 }

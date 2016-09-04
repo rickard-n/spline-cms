@@ -1,18 +1,21 @@
 package se.spline.api.repository.entity;
 
-import lombok.Getter;
-import org.axonframework.eventhandling.annotation.EventHandler;
+import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier;
+import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 import se.spline.api.folder.FolderId;
 import se.spline.api.repository.RepositoryId;
 import se.spline.api.repository.RepositoryMetaData;
+import se.spline.api.repository.command.CreateRepositoryCommand;
+import se.spline.api.repository.command.DeleteRepositoryCommand;
+import se.spline.api.repository.command.UpdateMetaDataForRepositoryCommand;
+import se.spline.api.repository.command.UpdateRepositoryWithRootFolderCommand;
 import se.spline.api.repository.event.RepositoryCreatedEvent;
 import se.spline.api.repository.event.RepositoryDeletedEvent;
 import se.spline.api.repository.event.RepositoryMetaDataUpdatedEvent;
 import se.spline.api.repository.event.RepositoryRootFolderChangedEvent;
 
-@Getter
 public class Repository extends AbstractAnnotatedAggregateRoot<RepositoryId> {
 
     @AggregateIdentifier
@@ -21,32 +24,41 @@ public class Repository extends AbstractAnnotatedAggregateRoot<RepositoryId> {
     private FolderId rootFolder;
     private boolean deleted;
 
-    Repository(RepositoryId repositoryId, RepositoryMetaData metaData) {
-        apply(new RepositoryCreatedEvent(repositoryId, metaData));
+    @CommandHandler
+    public Repository(CreateRepositoryCommand command) {
+        this.id = command.getRepositoryId();
+        apply(new RepositoryCreatedEvent(
+            command.getRepositoryId(),
+            command.getMetaData()
+        ));
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    protected Repository() {}
+    public Repository() {}
 
     @Override
     public RepositoryId getIdentifier() {
         return id;
     }
 
-    void changeRootFolder(FolderId folderId) {
-        apply(new RepositoryRootFolderChangedEvent(id, folderId));
+
+    @CommandHandler
+    public void handle(UpdateRepositoryWithRootFolderCommand command) {
+        apply(new RepositoryRootFolderChangedEvent(id, command.getFolderId()));
     }
 
-    void delete() {
+    @CommandHandler
+    public void handle(DeleteRepositoryCommand command) {
         apply(new RepositoryDeletedEvent(id));
     }
 
-    void updateMetadata(RepositoryMetaData metaData) {
-        apply(new RepositoryMetaDataUpdatedEvent(id,metaData));
+    @CommandHandler
+    public void handle(UpdateMetaDataForRepositoryCommand command) {
+        apply(new RepositoryMetaDataUpdatedEvent(id, command.getMetaData()));
     }
 
-    @EventHandler
-    public void handle(RepositoryCreatedEvent event) {
+    @EventSourcingHandler
+    public void on(RepositoryCreatedEvent event) {
         this.id = event.getId();
         this.metaData = RepositoryMetaData.builder()
                 .name(event.getMetaData()
@@ -54,18 +66,18 @@ public class Repository extends AbstractAnnotatedAggregateRoot<RepositoryId> {
             .build();
     }
 
-    @EventHandler
-    public void handle(RepositoryRootFolderChangedEvent event) {
+    @EventSourcingHandler
+    public void on(RepositoryRootFolderChangedEvent event) {
         this.rootFolder = event.getFolderId();
     }
 
-    @EventHandler
-    public void handle(RepositoryDeletedEvent event) {
+    @EventSourcingHandler
+    public void on(RepositoryDeletedEvent event) {
         this.deleted = true;
     }
 
-    @EventHandler
-    public void handle(RepositoryMetaDataUpdatedEvent event) {
+    @EventSourcingHandler
+    public void on(RepositoryMetaDataUpdatedEvent event) {
         this.metaData = event.getMetaData();
     }
 }
