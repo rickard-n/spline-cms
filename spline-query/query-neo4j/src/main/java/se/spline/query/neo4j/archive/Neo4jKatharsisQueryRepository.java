@@ -1,4 +1,4 @@
-package se.spline.query.neo4j;
+package se.spline.query.neo4j.archive;
 
 import org.neo4j.ogm.cypher.query.Pagination;
 import org.neo4j.ogm.cypher.query.SortOrder;
@@ -13,10 +13,10 @@ import se.spline.query.KatharsisQueryRepository;
 import se.spline.query.filter.Filters;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 
-public abstract class Neo4jKatharsisQueryRepository<T,S> extends GraphRepositoryImpl<T> implements GraphRepository<T>, KatharsisQueryRepository<S> {
+
+public abstract class Neo4jKatharsisQueryRepository<T> extends GraphRepositoryImpl<T> implements GraphRepository<T>, KatharsisQueryRepository<T> {
 
     private Class<T> clazz;
 
@@ -28,36 +28,22 @@ public abstract class Neo4jKatharsisQueryRepository<T,S> extends GraphRepository
         this.clazz = clazz;
     }
 
-    protected abstract S convertEntity(T entity);
-    protected abstract T convertResource(S resource);
-
     @Override
-    public Collection<S> findAll(Filters filters, Sort sort) {
+    public Collection<T> findAll(Filters filters, Sort sort) {
         try {
-            return session.loadAll(clazz, buildFilters(filters), buildSortOrder(sort))
-                .stream()
-                .map(this::convertEntity)
-                .collect(Collectors.toList());
+            return session.loadAll(clazz, buildFilters(filters), buildSortOrder(sort));
         } catch (Exception e) {
             throw Neo4jOgmExceptionTranslator.translateExceptionIfPossible(e);
         }
     }
 
     @Override
-    public Collection<S> findAll(Filters filters, Pageable page) {
+    public Collection<T> findAll(Filters filters, Pageable page) {
         try {
-            return session.loadAll(clazz, buildFilters(filters), buildPagination(page))
-                .stream()
-                .map(this::convertEntity)
-                .collect(Collectors.toList());
+            return session.loadAll(clazz, buildFilters(filters), buildPagination(page));
         } catch (Exception e) {
             throw Neo4jOgmExceptionTranslator.translateExceptionIfPossible(e);
         }
-    }
-
-    @Override
-    public S saveResource(S resource) {
-        return convertEntity(save(convertResource(resource)));
     }
 
     private Pagination buildPagination(Pageable page) {

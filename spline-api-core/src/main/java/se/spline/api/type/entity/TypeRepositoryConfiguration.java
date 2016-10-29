@@ -16,15 +16,15 @@ public class TypeRepositoryConfiguration {
 
 	@Bean
 	@Autowired
-	EventSourcingRepository<Type> typeRepository(EventStore eventStore, EventBus eventBus) {
-        final EventSourcingRepository<Type> repository = new EventSourcingRepository<>(Type.class, eventStore);
+	EventSourcingRepository<TypeAggregate> typeRepository(EventStore eventStore, EventBus eventBus) {
+        final EventSourcingRepository<TypeAggregate> repository = new EventSourcingRepository<>(TypeAggregate.class, eventStore);
         repository.setEventBus(eventBus);
         return repository;
 	}
 
 	@Bean
     @Autowired
-    AggregateAnnotationCommandHandler typeAggregateAnnotationCommandHandler(CommandBus commandBus, Repository<Type> repository) {
-        return AggregateAnnotationCommandHandler.subscribe(Type.class, repository, commandBus, new AnnotationCommandTargetResolver());
+    AggregateAnnotationCommandHandler typeAggregateAnnotationCommandHandler(CommandBus commandBus, Repository<TypeAggregate> repository) {
+        return AggregateAnnotationCommandHandler.subscribe(TypeAggregate.class, repository, commandBus, new AnnotationCommandTargetResolver());
     }
 }

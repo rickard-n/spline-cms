@@ -16,11 +16,11 @@ import java.util.Collections;
 
 public class TypeTest {
 
-	private FixtureConfiguration<Type> fixture;
+	private FixtureConfiguration<TypeAggregate> fixture;
 
 	@Before
 	public void setUp() throws Exception {
-		fixture = Fixtures.newGivenWhenThenFixture(Type.class);
+		fixture = Fixtures.newGivenWhenThenFixture(TypeAggregate.class);
 	}
 
 	@Test

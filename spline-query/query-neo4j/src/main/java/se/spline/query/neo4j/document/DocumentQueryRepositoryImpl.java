@@ -4,7 +4,7 @@ import org.neo4j.ogm.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
-import se.spline.query.neo4j.Neo4jKatharsisQueryRepository;
+import se.spline.query.neo4j.archive.Neo4jKatharsisQueryRepository;
 
 @Repository
 public class DocumentQueryRepositoryImpl extends Neo4jKatharsisQueryRepository<DocumentEntity> implements DocumentQueryRepository {
@@ -26,5 +26,10 @@ public class DocumentQueryRepositoryImpl extends Neo4jKatharsisQueryRepository<D
     @Override
     public Iterable<DocumentEntity> findAllByDocumentId(Iterable<String> documentId) {
         return template.loadAllByProperty(DocumentEntity.class, "documentId", documentId);
+    }
+
+    @Override
+    public DocumentEntity saveResource(DocumentEntity resource) {
+        return null;
     }
 }

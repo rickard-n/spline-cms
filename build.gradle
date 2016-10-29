@@ -4,18 +4,18 @@ ext {
 	splineVersion = '0.1'
     springPlattformBomVersion = '2.0.7.RELEASE'
     axonVersion = '2.4.5'
-    springfoxVersion = '2.5.0'
-    katharsisVersion = '2.5.0'
+    springfoxVersion = '2.6.0'
+    katharsisVersion = '2.6.0'
     reflectionsVersion = '0.9.10'
-    springNeo4jVersion = '4.1.2.RELEASE'
+    springNeo4jVersion = '4.1.4.RELEASE'
     lombokVersion = '1.16.10'
     mongoDriverVersion = '2.9.3'
 }
 
 buildscript {
 	ext {
-		springBootVersion = '1.4.0.RELEASE'
-		dependencyManagementVersion = '0.6.0.RELEASE'
+		springBootVersion = '1.4.1.RELEASE'
+		dependencyManagementVersion = '0.6.1.RELEASE'
 	}
 	repositories {
 		maven {

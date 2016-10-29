@@ -4,9 +4,10 @@ import io.katharsis.queryParams.QueryParams;
 import io.katharsis.repository.ResourceRepository;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Component;
-import se.spline.api.model.Type;
+import se.spline.api.model.TypeModel;
 import se.spline.api.model.fragment.PropertyChoiceType;
 import se.spline.api.repository.builder.TypeFactory;
 import se.spline.api.type.TypeId;
@@ -17,13 +18,14 @@ import se.spline.api.type.property.PropertyTypeChoiceImpl;
 import se.spline.api.type.property.StringPropertyType;
 import se.spline.api.type.property.StringPropertyTypeChoice;
 import se.spline.api.type.property.Updatability;
-import se.spline.query.neo4j.type.TypeQueryRepository;
+import se.spline.query.filter.Filters;
+import se.spline.query.type.TypeQueryRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class TypeResourceRepository implements ResourceRepository<Type, String> {
+public class TypeResourceRepository implements ResourceRepository<TypeModel, String> {
     @Autowired
     private CommandGateway commandGateway;
 
@@ -34,18 +36,18 @@ public class TypeResourceRepository implements ResourceRepository<Type, String> 
     private Neo4jOperations template;
 
     @Override
-    public Type findOne(String id, QueryParams queryParams) {
-        return TypeFactory.from(typeQueryRepository.findByDocumentId(id));
+    public TypeModel findOne(String id, QueryParams queryParams) {
+        return TypeFactory.from(typeQueryRepository.findByTypeId(id));
     }
 
     @Override
-    public Iterable<Type> findAll(QueryParams queryParams) {
-        return TypeFactory.from(typeQueryRepository.findAll());
+    public Iterable<TypeModel> findAll(QueryParams queryParams) {
+        return TypeFactory.from(typeQueryRepository.findAll(new Filters(), new PageRequest(1, 10)));
     }
 
     @Override
-    public Iterable<Type> findAll(Iterable<String> ids, QueryParams queryParams) {
-        return TypeFactory.from(typeQueryRepository.findAllByDocumentId(ids));
+    public Iterable<TypeModel> findAll(Iterable<String> ids, QueryParams queryParams) {
+        return TypeFactory.from(typeQueryRepository.findAllByTypeId(ids));
     }
 
     @Override
@@ -54,7 +56,7 @@ public class TypeResourceRepository implements ResourceRepository<Type, String> 
     }
 
     @Override
-    public  Type save(Type entity) {
+    public TypeModel save(TypeModel entity) {
         final CreateTypeCommand.CreateTypeCommandBuilder commandBuilder = CreateTypeCommand.builder().id(new TypeId()).name(entity.getName()).baseType(entity.getBaseType());
         final List<PropertyType> properties = entity.getProperties().stream()
             .map(typeProperty -> StringPropertyType.builder()

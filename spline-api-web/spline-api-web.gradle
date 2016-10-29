@@ -8,7 +8,7 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger-ui'
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
 
 
     compile group: 'io.katharsis', name: 'katharsis-spring'

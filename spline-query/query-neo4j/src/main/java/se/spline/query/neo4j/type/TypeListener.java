@@ -4,6 +4,8 @@ import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.spline.api.type.event.TypeCreatedEvent;
+import se.spline.domain.Type;
+import se.spline.query.type.TypeQueryRepository;
 
 import java.util.Collections;
 
@@ -18,11 +20,11 @@ public class TypeListener {
 
     @EventHandler
     public void handle(TypeCreatedEvent event) {
-        repository.save(TypeEntity.builder()
-            .typeId(event.getTypeId().getIdentifier())
+        repository.saveResource(Type.builder()
+            .id(event.getTypeId())
             .name(event.getName())
             .baseType(event.getBaseType())
-            .properties(Collections.singletonList(TypePropertyEntity.builder().build()))
+            .properties(Collections.emptyList())
             .build());
     }
 }

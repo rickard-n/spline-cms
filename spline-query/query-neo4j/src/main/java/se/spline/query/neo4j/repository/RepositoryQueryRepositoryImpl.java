@@ -4,7 +4,7 @@ import org.neo4j.ogm.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
-import se.spline.query.neo4j.Neo4jKatharsisQueryRepository;
+import se.spline.query.neo4j.archive.Neo4jKatharsisQueryRepository;
 
 @Repository
 public class RepositoryQueryRepositoryImpl extends Neo4jKatharsisQueryRepository<RepositoryEntity> implements RepositoryQueryRepository {
@@ -32,5 +32,10 @@ public class RepositoryQueryRepositoryImpl extends Neo4jKatharsisQueryRepository
     @Override
     public void deleteByRepositoryId(String id) {
         super.delete(findByRepositoryId(id));
+    }
+
+    @Override
+    public RepositoryEntity saveResource(RepositoryEntity resource) {
+        return null;
     }
 }

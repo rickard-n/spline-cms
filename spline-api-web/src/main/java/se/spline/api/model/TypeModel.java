@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode()
 @JsonApiResource(type = "type")
-public class Type {
+public class TypeModel {
 
     @JsonApiId
     private String id;

@@ -1,6 +1,7 @@
 apply plugin: "groovy"
 
 dependencies {
+    compile project(':spline-api-core')
     compile group: 'org.projectlombok', name: 'lombok'
     compile group: 'org.springframework.data', name: 'spring-data-commons'
 }
